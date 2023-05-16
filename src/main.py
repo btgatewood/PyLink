@@ -6,6 +6,10 @@ from game import Game
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = '1, 32'  # set window position
 
+
+# TODO: Fixed time steps, variable rendering.
+# TODO: Debug console.
+
 pygame.init()
 pygame.display.set_caption('PyLink v0.0.1')
 pygame.mouse.set_visible(False)

@@ -25,15 +25,14 @@ class Player(pygame.sprite.Sprite):
         self.animations = {}
         for data in anim_data:
             self.animations[data[0]] = Animation(data[0], data[1])
-
         self.anim = self.animations['idle']
+        
+        # setup pygame sprite properties
+        self.image = self.anim.get_frame()
+        self.rect = self.image.get_rect(center = position)
+
         self.dx = 0
         self.dy = 0
-        self.position = position
-
-        # setup pygame sprite
-        self.image = self.anim.get_frame()
-        self.rect = self.image.get_rect()
     
     def input(self):
         keys = pygame.key.get_pressed()
@@ -67,14 +66,14 @@ class Player(pygame.sprite.Sprite):
         # temporary movement hack
         self.dx *= PLAYER_SPEED
         self.dy *= PLAYER_SPEED
-        self.position.x += self.dx
-        self.position.y += self.dy
+        self.rect.x += self.dx
+        self.rect.y += self.dy
 
     def render(self, screen):
-        # flip sprite if mouse cursor is left of screen center (aiming left)
-        if pygame.mouse.get_pos()[0] < self.position.x + PLAYER_HALF_SIZE:
+        # TODO: clamp player to screen center
+        if pygame.mouse.get_pos()[0] < self.rect.x + PLAYER_HALF_SIZE:
             self.image = pygame.transform.flip(
                 self.anim.get_frame(), True, False)
         else:
             self.image = self.anim.get_frame()
-        screen.blit(self.image, self.position)
+        screen.blit(self.image, self.rect)
