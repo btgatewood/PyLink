@@ -80,4 +80,6 @@ class Player(pygame.sprite.Sprite):
 
     def render(self, screen):
         screen.blit(self.image, self.rect)
+        # draw hitbox
+        pygame.draw.rect(screen, 'green', self.rect, 4)
         

@@ -7,11 +7,13 @@
 # TODO: Draw and move background.
 
 -- player.py
+# TODO: Draw player rect and hitbox.
 # TODO: Update position based on delta time.
 # TODO: Normalize diagonal movement.
 # TODO: Clamp player to screen center.
 
 -- weapon.py
+# TODO: Draw weapon rect and hitbox.
 # TODO: Add weapon member to game or player class?
 # TODO: Rotate weapon to face (aim toward) cursor (target).
 # TODO: Clamp player to screen center.
