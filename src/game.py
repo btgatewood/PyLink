@@ -6,28 +6,30 @@ from weapon import Weapon
 
 class Game:
     # TODO:  Draw and move background.
-    # TODO:  Draw and animate weapon.
 
     def __init__(self):
         # NOTE:  Using 32x32 crosshair image as cursor.
         self.cursor = pygame.image.load('data/crosshair32.png').convert_alpha()
 
-        pos = pygame.Vector2(SCREEN_WIDTH / 2 - PLAYER_HALF_SIZE, 
-                                    SCREEN_HEIGHT / 2 - PLAYER_HALF_SIZE * 1.5)
-        self.player = Player(pos)
-        self.weapon = Weapon(pos)
+        # set up actors
+        screen_center = pygame.Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+        self.player = Player(screen_center)
+        self.weapon = Weapon(screen_center)
 
+        # set up sprite group
         self.sprites = pygame.sprite.Group()
-        self.sprites.add(self.player)
+        self.sprites.add([self.player, self.weapon])
 
     def update(self):
-        self.player.update()
+        # for sprite in self.sprites:
+        #     sprite.update()
+        self.player.update(self.weapon)
         self.weapon.update()
     
     def render(self, screen):
-        self.player.render(screen)
-        self.weapon.render(screen)
+        for sprite in self.sprites:
+            sprite.render(screen)
 
-        # draw crosshair  # TODO: resize cursor, hide windows cursor
+        # draw crosshair  # TODO: resize cursor?
         pos = (pygame.mouse.get_pos()[0] - 16, pygame.mouse.get_pos()[1] - 16)
         screen.blit(self.cursor, pos)

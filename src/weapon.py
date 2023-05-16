@@ -2,34 +2,29 @@ import pygame
 
 from config import *
 
-# TODO:  Add weapon member to game or player class.
-# TODO:  Render weapon.
-# TODO:  Rotate weapon to aim at cursor (target).
-
-def flip_image_x(image):  # unused utility function
+def flip_image_x(image):  # flip image on the x-axis
     return pygame.transform.flip(image, True, False)
 
 class Weapon(pygame.sprite.Sprite):
     def __init__(self, position: pygame.Vector2):
         super().__init__()
-        self.image = pygame.image.load('data/weaponR1.png')
-        self.rect = self.image.get_rect(center = position)
-        self.flipped = False  # flag for facing left
-
         # TODO: load animations if we need them
+        self.image = pygame.image.load('data/weaponR2.png')
+        self.rect = self.image.get_rect(center=position)
+        self.rect.y += 48       # align weapon with player sprite
+        self.flipped = False    # flag, facing left if true
 
     def update(self):
-        # TODO?: flip if cursor is left of screen center (weapon & player position)
-        #        - must clamp player (& weapon) to screen center
-        # TODO?: self.center_x = self.rect.x + PLAYER_HALF_SIZE
+        # flip image based on mouse pos
         if pygame.mouse.get_pos()[0] < self.rect.centerx:
             if not self.flipped:
-                self.image = pygame.transform.flip(self.image, True, False)
+                self.image = flip_image_x(self.image)
                 self.flipped = True
         elif self.flipped:
-            self.image = pygame.transform.flip(self.image, True, False)
+            self.image = flip_image_x(self.image)
             self.flipped = False
-        # TODO: rotate to face cursor (aim)
+
+        # TODO: rotate to face cursor (aim at target)
 
     def render(self, screen):
         screen.blit(self.image, self.rect)

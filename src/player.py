@@ -3,6 +3,7 @@ import pygame
 from anim import Animation
 from config import *
 
+
 anim_data = [  # (anim_name, num_frames)
     ('death', 10),
     ('fall', 5),
@@ -15,9 +16,6 @@ anim_data = [  # (anim_name, num_frames)
 ]
 
 class Player(pygame.sprite.Sprite):
-    # TODO: Update position based on delta time.
-    # TODO: Normalize diagonal movement.
-
     def __init__(self, position: pygame.Vector2):
         super().__init__()
 
@@ -29,7 +27,7 @@ class Player(pygame.sprite.Sprite):
         
         # setup pygame sprite properties
         self.image = self.anim.get_frame()
-        self.rect = self.image.get_rect(center = position)
+        self.rect = self.image.get_rect(center=position)
 
         self.dx = 0
         self.dy = 0
@@ -53,7 +51,7 @@ class Player(pygame.sprite.Sprite):
         else:
             self.dy = 0
 
-    def update(self):
+    def update(self, weapon):
         self.input()
 
         # set animation & update current frame
@@ -63,17 +61,23 @@ class Player(pygame.sprite.Sprite):
             self.anim = self.animations['walk']
         self.anim.update()
 
-        # temporary movement hack
+        # movement
         self.dx *= PLAYER_SPEED
         self.dy *= PLAYER_SPEED
         self.rect.x += self.dx
         self.rect.y += self.dy
 
-    def render(self, screen):
-        # TODO: clamp player to screen center
-        if pygame.mouse.get_pos()[0] < self.rect.x + PLAYER_HALF_SIZE:
+        # flip image based on mouse pos
+        if pygame.mouse.get_pos()[0] < self.rect.centerx:
             self.image = pygame.transform.flip(
                 self.anim.get_frame(), True, False)
         else:
             self.image = self.anim.get_frame()
+
+        # move weapon
+        weapon.rect.x += self.dx
+        weapon.rect.y += self.dy
+
+    def render(self, screen):
         screen.blit(self.image, self.rect)
+        
