@@ -22,7 +22,7 @@ while running:
             running = False
 
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_ESCAPE]:
+    if keys[pygame.K_ESCAPE]:  # should we quit on escape key press in main?
         running = False
     
     game.update()

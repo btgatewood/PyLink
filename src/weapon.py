@@ -3,8 +3,8 @@ import pygame
 
 from config import *
 
-def flip_image_x(image):  # flip image on the y-axis
-    return pygame.transform.flip(image, True, False)
+# def flip_image_x(image):  # flip image on the x-axis
+#     return pygame.transform.flip(image, True, False)
 
 def flip_image_y(image):  # flip image on the y-axis
     return pygame.transform.flip(image, False, True)
@@ -13,7 +13,7 @@ class Weapon(pygame.sprite.Sprite):
     def __init__(self, position: pygame.Vector2):
         super().__init__()
         # TODO: load animations if we need them
-        self.image = pygame.image.load('data/weaponR3.png')
+        self.image = pygame.image.load('data/weaponR1.png')
         self.rect = self.image.get_rect(center=position)
         self.rect.y += 40   # align weapon with player sprite
         self.flip_y = False # flag, aiming left if true
@@ -33,11 +33,12 @@ class Weapon(pygame.sprite.Sprite):
         dx = mouse_x - self.rect.centerx
         dy = mouse_y - self.rect.centery
         angle = math.degrees(math.atan2(-dy, dx))
-        self.rotated_image = pygame.transform.rotate(self.image, angle)
+        # self.rotated_image = pygame.transform.rotate(self.image, angle)
+        self.rotated_image = pygame.transform.rotozoom(self.image, angle, 1.0)
         self.rotated_rect = self.rotated_image.get_rect(center=self.rect.center)
 
     def render(self, screen):
         screen.blit(self.rotated_image, self.rotated_rect)
         # draw hitbox
-        pygame.draw.rect(screen, 'orange', self.rect, 4)
-        pygame.draw.rect(screen, 'yellow', self.rotated_rect, 4)
+        # pygame.draw.rect(screen, 'orange', self.rect, 4)
+        # pygame.draw.rect(screen, 'yellow', self.rotated_rect, 4)

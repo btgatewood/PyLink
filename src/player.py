@@ -28,7 +28,10 @@ class Player(pygame.sprite.Sprite):
         # setup pygame sprite properties
         self.image = self.anim.get_frame()
         self.rect = self.image.get_rect(center=position)
-
+        
+        # set up physics-related data
+        self.hitbox = self.rect.inflate(-160,-160)
+        self.hitbox.y += 48
         self.dx = 0
         self.dy = 0
     
@@ -64,8 +67,13 @@ class Player(pygame.sprite.Sprite):
         # movement
         self.dx *= PLAYER_SPEED
         self.dy *= PLAYER_SPEED
-        self.rect.x += self.dx
-        self.rect.y += self.dy
+        self.hitbox.x += self.dx
+        self.hitbox.y += self.dy
+        self.rect.center = self.hitbox.midtop
+
+        # move weapon
+        weapon.rect.x += self.dx
+        weapon.rect.y += self.dy
 
         # flip image based on mouse pos
         if pygame.mouse.get_pos()[0] < self.rect.centerx:
@@ -74,12 +82,8 @@ class Player(pygame.sprite.Sprite):
         else:
             self.image = self.anim.get_frame()
 
-        # move weapon
-        weapon.rect.x += self.dx
-        weapon.rect.y += self.dy
-
     def render(self, screen):
         screen.blit(self.image, self.rect)
-        # draw hitbox
-        pygame.draw.rect(screen, 'green', self.rect, 4)
+        pygame.draw.rect(screen, 'green', self.rect, 8)     # draw rect
+        pygame.draw.rect(screen, 'orange', self.hitbox, 4)  # draw hitbox
         

@@ -1,19 +1,20 @@
 --  main.py
 # TODO: Fixed time steps, variable rendering.
-# TODO: Debug console.
-# TODO: Is there a better way to check for escape key?
+# TODO: Display fps and update hz.
+# TODO: Debug/developer console.
+# TODO: Is there a better way to quit with escape key?
 
 -- game.py
 # TODO: Draw and move background.
+# TODO: Draw player hands.
 
 -- player.py
-# TODO: Draw player rect and hitbox.
+# TODO: Improve player hitbox.
 # TODO: Update position based on delta time.
 # TODO: Normalize diagonal movement.
 # TODO: Clamp player to screen center.
 
 -- weapon.py
-# TODO: Draw weapon rect and hitbox.
+# TODO: Improve weapon rotation and hitbox.
 # TODO: Add weapon member to game or player class?
-# TODO: Rotate weapon to face (aim toward) cursor (target).
-# TODO: Clamp player to screen center.
+# TODO: Clamp weapon to player or screen center.

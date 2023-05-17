@@ -8,7 +8,6 @@ class Animation:
             file = f'data/player/{anim_name}_{i}.png'
             surface = pygame.image.load(file).convert_alpha()
             self.frames.append(surface)
-            print('loaded image: ' + file)
         
         # setup animation
         self.prev_time = pygame.time.get_ticks()    # get time in milliseconds
