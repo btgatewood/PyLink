@@ -1,3 +1,9 @@
+--  data.py
+# TODO: Print bounding boxes (non-zero portions) of each image to text file.
+ex:
+with Image.open("hopper.jpg") as im:
+    print(im.getbbox()) # Returns four coordinates in the format (left, upper, right, lower)
+
 --  main.py
 # TODO: Fixed time steps, variable rendering.
 # TODO: Display fps and update hz.

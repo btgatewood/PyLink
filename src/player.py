@@ -30,7 +30,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=position)
         
         # set up physics-related data
-        self.hitbox = self.rect.inflate(-160,-160)
+        self.hitbox = self.rect.inflate(-192,-160)
         self.hitbox.y += 48
         self.dx = 0
         self.dy = 0
@@ -84,6 +84,5 @@ class Player(pygame.sprite.Sprite):
 
     def render(self, screen):
         screen.blit(self.image, self.rect)
-        pygame.draw.rect(screen, 'green', self.rect, 8)     # draw rect
-        pygame.draw.rect(screen, 'orange', self.hitbox, 4)  # draw hitbox
+        pygame.draw.rect(screen, 'green', self.hitbox, 4)  # draw hitbox
         
