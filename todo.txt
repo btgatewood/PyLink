@@ -11,7 +11,8 @@ with Image.open("hopper.jpg") as im:
 # TODO: Is there a better way to quit with escape key?
 
 -- game.py
-# TODO: Draw and move background.
+# TODO: Draw crosshair black.  Blend sprites.
+# TODO: Move background.
 # TODO: Draw player hands.
 
 -- player.py

@@ -10,10 +10,10 @@ def save_image(img, path, file):
                  ImageCms.ImageCmsProfile(profile).tobytes())
 
 
-
 class Animated2DCharacterData:
-    src_root = 'C:/Users/gatew/Projects/RGS_Dev-2DAnimatedVectorCharacters/'
-    dst_root = 'C:/Users/gatew/Projects/PyLink/data/'
+    root = 'C:Users/gatew/Projects/'
+    src_root = root + 'Resources/RGS_Dev-2DAnimatedVectorCharacters/'
+    dst_root = root + 'PyLink/data/'
     
     def build_data(self):
         self.__create_dirs()

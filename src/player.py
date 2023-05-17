@@ -82,7 +82,9 @@ class Player(pygame.sprite.Sprite):
         else:
             self.image = self.anim.get_frame()
 
-    def render(self, screen):
-        screen.blit(self.image, self.rect)
-        pygame.draw.rect(screen, 'green', self.hitbox, 4)  # draw hitbox
+    def render(self, screen, offset_pos):
+        screen.blit(self.image, offset_pos)
+        # TODO: Fix hitbox and image rects.  Should we make them surfaces?
+        pygame.draw.rect(screen, 'red', self.hitbox, 4)   # draw hitbox
+        pygame.draw.rect(screen, 'orange', self.rect, 2)  # draw image rect
         
