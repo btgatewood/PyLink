@@ -23,20 +23,21 @@ class Game:
         self.weapon.update()
     
     def render(self, screen):
-        # TODO: STUDY THIS CODE!!!
-        # TODO: What is the offset value?
+        # TODO: STUDY THIS CODE!!! What is the offset value?!
         offset = pygame.math.Vector2()
         offset.x = self.player.rect.centerx - (SCREEN_WIDTH / 2)
         offset.y = self.player.rect.centery - (SCREEN_HEIGHT / 2)
-        print(offset)
 
         background_offset_pos = self.background.get_rect().topleft - offset
         screen.blit(self.background, background_offset_pos)
 
         offset_pos = self.player.rect.topleft - offset
         self.player.render(screen, offset_pos)
-        self.weapon.render(screen)
+        offset_pos = self.weapon.rot_rect.topleft - offset
+        self.weapon.render(screen, offset_pos)
 
-        # TODO: Tint crosshair.
-        screen.blit(self.cursor, 
-                    self.cursor.get_rect(topleft=pygame.mouse.get_pos()))
+        # NOTE: Tints crosshair. Is this how to tint the base white textures?
+        surf = self.cursor.copy()
+        surf.fill((0, 0, 0, 255), None, pygame.BLEND_RGBA_MULT)
+        surf.fill((255, 0, 0, 0), None, pygame.BLEND_RGBA_ADD)
+        screen.blit(surf, self.cursor.get_rect(topleft=pygame.mouse.get_pos()))

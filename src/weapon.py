@@ -3,8 +3,9 @@ import pygame
 
 from config import *
 
-# def flip_image_x(image):  # flip image on the x-axis
-#     return pygame.transform.flip(image, True, False)
+
+def flip_image_x(image):  # flip image on the x-axis
+    return pygame.transform.flip(image, True, False)
 
 def flip_image_y(image):  # flip image on the y-axis
     return pygame.transform.flip(image, False, True)
@@ -19,8 +20,8 @@ class Weapon(pygame.sprite.Sprite):
         self.flip_y = False # flag, aiming left if true
 
     def update(self):
-        # flip image on y-axis if cursor is left of weapon
-        if pygame.mouse.get_pos()[0] < self.rect.centerx:
+        # flip image on y-axis if cursor is left of weapon (screen center)
+        if pygame.mouse.get_pos()[0] < SCREEN_CENTER[0]:
             if not self.flip_y:
                 self.image = flip_image_y(self.image)
                 self.flip_y = True
@@ -30,15 +31,14 @@ class Weapon(pygame.sprite.Sprite):
 
         # rotate to face cursor (aim at target)
         mouse_x, mouse_y = pygame.mouse.get_pos()
-        dx = mouse_x - self.rect.centerx
-        dy = mouse_y - self.rect.centery
+        dx = mouse_x - SCREEN_CENTER[0]
+        dy = mouse_y - SCREEN_CENTER[1]
         angle = math.degrees(math.atan2(-dy, dx))
-        # self.rotated_image = pygame.transform.rotate(self.image, angle)
-        self.rotated_image = pygame.transform.rotozoom(self.image, angle, 1.0)
-        self.rotated_rect = self.rotated_image.get_rect(center=self.rect.center)
+        # using rotozoom for better rotation filtering
+        self.rot_image = pygame.transform.rotozoom(self.image, angle, 1.0)
+        self.rot_rect = self.rot_image.get_rect(center=self.rect.center)
 
-    def render(self, screen):
-        screen.blit(self.rotated_image, self.rotated_rect)
-        # draw hitbox
+    def render(self, screen, offset_pos):
+        screen.blit(self.rot_image, offset_pos)
         # pygame.draw.rect(screen, 'orange', self.rect, 4)
         # pygame.draw.rect(screen, 'yellow', self.rotated_rect, 4)

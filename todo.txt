@@ -11,17 +11,10 @@ with Image.open("hopper.jpg") as im:
 # TODO: Is there a better way to quit with escape key?
 
 -- game.py
-# TODO: Draw crosshair black.  Blend sprites.
-# TODO: Move background.
+# TODO: Blend sprites.  # NOTE: See crosshair tinting in game.py
 # TODO: Draw player hands.
 
 -- player.py
-# TODO: Improve player hitbox.
+# TODO: Render player hitbox correctly.
 # TODO: Update position based on delta time.
 # TODO: Normalize diagonal movement.
-# TODO: Clamp player to screen center.
-
--- weapon.py
-# TODO: Improve weapon rotation and hitbox.
-# TODO: Add weapon member to game or player class?
-# TODO: Clamp weapon to player or screen center.

@@ -76,7 +76,8 @@ class Player(pygame.sprite.Sprite):
         weapon.rect.y += self.dy
 
         # flip image based on mouse pos
-        if pygame.mouse.get_pos()[0] < self.rect.centerx:
+        # TODO:  NOW WE NEED TO CHECK FOR CENTER SCREEN, NOT SPRITE POSITION
+        if pygame.mouse.get_pos()[0] < SCREEN_CENTER[0]:
             self.image = pygame.transform.flip(
                 self.anim.get_frame(), True, False)
         else:
@@ -85,6 +86,7 @@ class Player(pygame.sprite.Sprite):
     def render(self, screen, offset_pos):
         screen.blit(self.image, offset_pos)
         # TODO: Fix hitbox and image rects.  Should we make them surfaces?
-        pygame.draw.rect(screen, 'red', self.hitbox, 4)   # draw hitbox
-        pygame.draw.rect(screen, 'orange', self.rect, 2)  # draw image rect
+        #       ex: screen.blit(self.hitbox_image, hitbox_offset_pos)
+        # pygame.draw.rect(screen, 'red', self.hitbox, 4)   # draw hitbox
+        # pygame.draw.rect(screen, 'orange', self.rect, 2)  # draw image rect
         
