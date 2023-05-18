@@ -14,7 +14,7 @@ screen = pygame.display.set_mode((SCREEN_SIZE))
 clock = pygame.time.Clock()
 running = True
 
-game = Game()  # loads images, requires set display mode first
+game = Game()  # loads images, requires display mode set
 
 while running:
     for event in pygame.event.get():

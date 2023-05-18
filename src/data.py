@@ -16,9 +16,10 @@ Character Options
 
 """
 Notes
-    - TODO: NOTE: weapons are 2048px; poor fit w/player @ 256px; try 128x128px
+    - TODO: NOTE: weapons are 2048px, poor fit w/player @ 256px; try 128x128px
     - player sprites are ~64x96 with 256x256 textures
     - only the death animation has the player move outside of hitbox
+    - the biggest rocks (128px) are best fit for player (use as walls)
 """
 
 """
@@ -81,10 +82,10 @@ class GraphicsDataBuilder:
                 img256 = self._resize_image(img, 256)
                 img512 = self._resize_image(img, 512)
                 # TODO: rotate texture?
-                # EXAMPLE: save image in 2 sizes and rotated in 4 directions
+                # EX: save image in 2 sizes and rotated in 4 directions
                 # for i in range(4):
                 #     save_image(img256, f'{dst_path}{file}_256_{i}{ext}'
-                #     save_image(img256, f'{dst_path}{file}_512_{i}{ext}'
+                #     save_image(img512, f'{dst_path}{file}_512_{i}{ext}'
                 #     if i < 3:
                 #         # -90 degrees counter-clockwise
                 #         img256 = img256.rotate(-90, Image.Resampling.NEAREST)

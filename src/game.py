@@ -10,11 +10,9 @@ class Game:
     def __init__(self):
         self.background = pygame.image.load('data/background.png').convert()
 
-        # set up actors (sprites)
-        # TODO: Start at (1000, 1000)
-        screen_center_pos = pygame.Vector2(SCREEN_CENTER)
-        self.player = Player(screen_center_pos)
-        self.weapon = Weapon(screen_center_pos)
+        world_center = pygame.Vector2(1280, 1280)  # TODO: set to background rect center
+        self.player = Player(world_center)
+        self.weapon = Weapon(world_center)
 
         self.cursor = pygame.image.load('data/crosshair32.png').convert_alpha()
 
@@ -40,5 +38,5 @@ class Game:
         # NOTE: Tints crosshair. Is this how to tint the base white textures?
         surf = self.cursor.copy()
         surf.fill((0, 0, 0, 255), None, pygame.BLEND_RGBA_MULT)
-        # surf.fill((255, 0, 0, 0), None, pygame.BLEND_RGBA_ADD)
+        # surf.fill((255, 0, 0, 0), None, pygame.BLEND_RGBA_ADD)  # tint red
         screen.blit(surf, self.cursor.get_rect(topleft=pygame.mouse.get_pos()))
