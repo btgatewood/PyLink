@@ -1,112 +1,137 @@
+"""
+Animated Body
+    body  x 1
+    hands x 2 (L/R)
+    feet  x 2 (L/R)
+    wings x 2 (L/R)
+
+Character Options
+    head    x 3
+    hair    x 3
+    horns   x 5
+    eyes    x 7
+    mouth   x 8
+    weapon  x 3
+"""
+
+"""
+Notes
+    - TODO: NOTE: weapons are 2048px; poor fit w/player @ 256px; try 128x128px
+    - player sprites are ~64x96 with 256x256 textures
+    - only the death animation has the player move outside of hitbox
+"""
+
+"""
+Thoughts
+    - a tiled map probably isn't the best choice for this game
+    - unless we implement more CQB, topdown shooter mechanics
+"""
+
 import os
 from PIL import Image, ImageCms
 
 
-root = 'C:Users/gatew/Projects/'
-src_root = root + 'Resources/RGS_Dev-2DAnimatedVectorCharacters/'
-dst_root = root + 'PyLink/data/'
-profile = ImageCms.createProfile('sRGB')
+class GraphicsDataBuilder:
+    def __init__(self):
+        self.root = 'C:/Users/gatew/Projects/PyLink/'
+        self.src_root = self.root + 'rgsdev/'
+        self.dst_root = self.root + 'test_data/'
 
-def save_image(img, path, file):
-        # save image with correct srgb profile
-        img.save(path + file, icc_profile=
-                 ImageCms.ImageCmsProfile(profile).tobytes())
-        
-
-class Animated2DCharacterData:    
-    def build_data(self):
-        self.__create_dirs()
-
-        # resize animation frames
-        self.__resize_dir('Full body animated characters/Char 3/no hands/', 
-                          'player/')
-
-        # TODO: resize environment dir (ground and rock textures)
-        # TODO: resize extras dir (bullet, crosshair, muzzle textures)
-        # TODO: resize weapons dir
-        # resize textures
-        src_path = os.path.join(self.src_root, 'Textures/')
-        # dst_path = os.path.join(self.dst_root, 'textures/')
-        for file in os.listdir(src_path):
-            with Image.open(src_path + file) as img:
-                self.__resize_textures(file, img)
-            print(file)
+        profile = ImageCms.createProfile('sRGB')
+        self.icc_profile = ImageCms.ImageCmsProfile(profile).tobytes()
     
-    def __create_dirs(self):
+    def _make_dirs(self):
+        """ Utility function to build the output directory structure. """
         if not os.path.exists(self.dst_root):
             os.mkdir(self.dst_root)
-        for dir in ['background/', 'player/',]:  # add new subdirs here
-            dst_path = os.path.join(self.dst_root, dir)
+        for path in ['player/', 'environment/']:  # TODO: , 'extras/', 'weapons/']:
+            dst_path = os.path.join(self.dst_root, path)
             if not os.path.exists(dst_path):
                 os.mkdir(dst_path)
     
-    def __resize_dir(self, src_dir, dst_dir): 
-        # resize images (anim frames) in src_dir from 2048px to 256px
-        src_path = os.path.join(self.src_root, src_dir)
-        dst_path = os.path.join(self.dst_root, dst_dir)
+    # TODO: Use resize_image() and save_image() to create a super method.
+    def _resize_image(self, img, size):
+        """ Utility function to get a resized image using the best filter. """
+        return img.resize((size,size), Image.Resampling.LANCZOS)
+    
+    def _save_image(self, img, path):
+        """ Utility function to save images with the correct srgb profile. """
+        img.save(path, icc_profile = self.icc_profile) 
+    
+    def _resize_player_animation_frames(self):
+        """ Resize all char anim textures and save in player folder. """
+        src_path = os.path.join(self.src_root, 'char3_no_hands/')
+        dst_path = os.path.join(self.dst_root, 'player/')
         for file in os.listdir(src_path):
             with Image.open(src_path + file) as img:
-                save_image(img.resize((256, 256), Image.Resampling.LANCZOS),
-                           dst_path, file)
-            print(dst_dir + file)
+                self._save_image(self._resize_image(img, 256), 
+                                 f'{dst_path}{file}')
+                print(f'file resized: {dst_path}{file}')
 
-    # TODO: resize environment dir (ground and rock textures)
-    # TODO: resize extras dir (bullet, crosshair, muzzle textures)
-    # TODO: resize weapons dir
-
-    def __resize_textures(self, file, img):
-        # resize textures (ground, weapons, etc.) from 2048px to various sizes
+    def _resize_environment_texture(self, file, img):
+        dst_path = os.path.join(self.dst_root, 'environment/')
+        file, ext = os.path.splitext(file)
         match file:
+            case 'ground_white':
+                # resize background color texture from 2048px to 128px
+                img128 = self._resize_image(img, 128)
+                self._save_image(img128, f'{dst_path}{file}_128{ext}')
+            case 'ground2_white':
+                # resize ground detail texture from 2048px to various sizes
+                img256 = self._resize_image(img, 256)
+                img512 = self._resize_image(img, 512)
+                # TODO: rotate texture?
+                # EXAMPLE: save image in 2 sizes and rotated in 4 directions
+                # for i in range(4):
+                #     save_image(img256, f'{dst_path}{file}_256_{i}{ext}'
+                #     save_image(img256, f'{dst_path}{file}_512_{i}{ext}'
+                #     if i < 3:
+                #         # -90 degrees counter-clockwise
+                #         img256 = img256.rotate(-90, Image.Resampling.NEAREST)
+                #         img512 = img512.rotate(-90, Image.Resampling.NEAREST)
+                img1028 = self._resize_image(img, 1024)
+                self._save_image(img256, f'{dst_path}{file}_256{ext}')
+                self._save_image(img512, f'{dst_path}{file}_512{ext}')
+                self._save_image(img1028, f'{dst_path}{file}_1028{ext}')
+            case 'ground3_white':
+                # resize from 762x735 to nearest pow of 2?
+                img256 = self._resize_image(img, 256)
+                img512 = self._resize_image(img, 512)
+                self._save_image(img256, f'{dst_path}{file}_256{ext}')
+                self._save_image(img512, f'{dst_path}{file}_512{ext}')
+            case 'rock1' | 'rock2' | 'rock3':
+                # resize rock textures from 2048px to various sizes
+                img64 = self._resize_image(img, 64)
+                img96 = self._resize_image(img, 96)
+                img128 = self._resize_image(img, 128)
+                self._save_image(img64, f'{dst_path}{file}_64{ext}')
+                self._save_image(img96, f'{dst_path}{file}_96{ext}')
+                self._save_image(img128, f'{dst_path}{file}_128{ext}')
+            case _:
+                print(f'file not resized: {dst_path}{file}{ext}')
+                return
+        print(f'file resized: {dst_path}{file}{ext}')
+    
+    def _resize_environment_textures(self):
+        src_path = os.path.join(self.src_root, 'environment/')
+        for file in os.listdir(src_path):
+            with Image.open(src_path + file) as img:
+                self._resize_environment_texture(file, img)
+        
+        # copy a mock player image for tiled map
+        with Image.open(self.dst_root + 'player/idle_0.png') as img:
+            self._save_image(img, self.dst_root + 'environment/idle_0.png')
 
-            # weapon effects  # NOTE: EXTRAS/
-            case 'bullet.png' | 'crosshair.png' | 'muzzle.png':
-                # output bullet (2048x2048) and crosshair (64x64) and
-                # muzzle (2048x2048) in multiple sizes                        
-                file, ext = os.path.splitext(file)
-                img16 = img.resize((16,16), Image.Resampling.LANCZOS)
-                save_image(img16, self.dst_root, file + '16' + ext)
-                img24 = img.resize((24,24), Image.Resampling.LANCZOS)
-                save_image(img24, self.dst_root, file + '24' + ext)
-                img32 = img.resize((32,32), Image.Resampling.LANCZOS)
-                save_image(img32, self.dst_root, file + '32' + ext)
-                img64 = None
-                if file == 'bullet' or file == 'muzzle':
-                    img64 = img.resize((64,64), Image.Resampling.LANCZOS)
-                else:  # file == 'crosshair.png'
-                    img64 = img.copy()
-                save_image(img64, self.dst_root, file + '64' + ext)
-                print(f'data.py -> {file}: resized and saved')
-
-            # weapon images  # NOTE: WEAPONS/
-            case 'weaponR1.png' | 'weaponR2.png' | 'weaponR3.png':
-                # weapons are 2048px; poor fit w/player @ 256px; try 128x128px
-                img128 = img.resize((128,128))
-                save_image(img128, self.dst_root, file)
-
-            # ground and rock textures  # NOTE: ENVIRONMENT/
-            case 'ground2_white.png':
-                # detailed ground texture, save image in 2 sizes and 
-                # rotated in 4 directions
-                img256 = img.resize((256,256), Image.Resampling.LANCZOS)
-                img512 = img.resize((512,512), Image.Resampling.LANCZOS)
-                file, ext = os.path.splitext(file)
-                for i in range(4):
-                    save_image(img256, f'{self.dst_root}background/', 
-                               f'{file}256_{i}{ext}')
-                    save_image(img512, f'{self.dst_root}background/', 
-                               f'{file}512_{i}{ext}')
-                    if i < 3:
-                        img256 = img256.rotate(-90, # degress counter-clockwise
-                                               Image.Resampling.NEAREST)
-                        img512 = img512.rotate(-90, Image.Resampling.NEAREST)
-                print(f'data.py -> {file}{ext}: rotated and saved')
-            case _:  
-                # resize background and rock textures from 2048px to 256px
-                img256 = img.resize((256,256), Image.Resampling.LANCZOS)
-                save_image(img256, self.dst_root + 'background/', file)
+    def build_data(self):
+        """ Main class method; modifies and exports graphics data. """
+        self._make_dirs()
+        self._resize_player_animation_frames()
+        self._resize_environment_textures()
+        # TODO: resize extras folder  (bullet, crosshair, and muzzle)
+        # TODO: resize weapons folder (weapons)
 
 
 if __name__ == '__main__':
-    data = Animated2DCharacterData()
+    data = GraphicsDataBuilder()
     data.build_data()
-    print('data.py -> 2DAnimatedVectorCharacter.build_data(): success?!')
+    print('data.py: graphics.build_data() -> success?')
