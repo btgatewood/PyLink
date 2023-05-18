@@ -2,19 +2,18 @@ import os
 from PIL import Image, ImageCms
 
 
+root = 'C:Users/gatew/Projects/'
+src_root = root + 'Resources/RGS_Dev-2DAnimatedVectorCharacters/'
+dst_root = root + 'PyLink/data/'
 profile = ImageCms.createProfile('sRGB')
 
 def save_image(img, path, file):
         # save image with correct srgb profile
         img.save(path + file, icc_profile=
                  ImageCms.ImageCmsProfile(profile).tobytes())
+        
 
-
-class Animated2DCharacterData:
-    root = 'C:Users/gatew/Projects/'
-    src_root = root + 'Resources/RGS_Dev-2DAnimatedVectorCharacters/'
-    dst_root = root + 'PyLink/data/'
-    
+class Animated2DCharacterData:    
     def build_data(self):
         self.__create_dirs()
 

@@ -12,7 +12,7 @@ class Game:
 
         # set up actors (sprites)
         # TODO: Start at (1000, 1000)
-        screen_center_pos = pygame.Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+        screen_center_pos = pygame.Vector2(SCREEN_CENTER)
         self.player = Player(screen_center_pos)
         self.weapon = Weapon(screen_center_pos)
 
@@ -23,10 +23,11 @@ class Game:
         self.weapon.update()
     
     def render(self, screen):
-        # TODO: STUDY THIS CODE!!! What is the offset value?!
+        # TODO: Study. This. Code!  What IS the offset value?!
+        # NOTE: The offset is the player's distance from the screen's center.
         offset = pygame.math.Vector2()
-        offset.x = self.player.rect.centerx - (SCREEN_WIDTH / 2)
-        offset.y = self.player.rect.centery - (SCREEN_HEIGHT / 2)
+        offset.x = self.player.rect.centerx - SCREEN_CENTER[0]
+        offset.y = self.player.rect.centery - SCREEN_CENTER[1]
 
         background_offset_pos = self.background.get_rect().topleft - offset
         screen.blit(self.background, background_offset_pos)
@@ -39,5 +40,5 @@ class Game:
         # NOTE: Tints crosshair. Is this how to tint the base white textures?
         surf = self.cursor.copy()
         surf.fill((0, 0, 0, 255), None, pygame.BLEND_RGBA_MULT)
-        surf.fill((255, 0, 0, 0), None, pygame.BLEND_RGBA_ADD)
+        # surf.fill((255, 0, 0, 0), None, pygame.BLEND_RGBA_ADD)
         screen.blit(surf, self.cursor.get_rect(topleft=pygame.mouse.get_pos()))

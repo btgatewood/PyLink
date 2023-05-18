@@ -40,5 +40,3 @@ class Weapon(pygame.sprite.Sprite):
 
     def render(self, screen, offset_pos):
         screen.blit(self.rot_image, offset_pos)
-        # pygame.draw.rect(screen, 'orange', self.rect, 4)
-        # pygame.draw.rect(screen, 'yellow', self.rotated_rect, 4)

@@ -4,7 +4,8 @@ from anim import Animation
 from config import *
 
 
-anim_data = [  # (anim_name, num_frames)
+player_anim_data = [  
+    # (anim_name, num_frames)
     ('death', 10),
     ('fall', 5),
     ('hit', 3),
@@ -21,7 +22,7 @@ class Player(pygame.sprite.Sprite):
 
         # load images
         self.animations = {}
-        for data in anim_data:
+        for data in player_anim_data:
             self.animations[data[0]] = Animation(data[0], data[1])
         self.anim = self.animations['idle']
         
@@ -75,18 +76,26 @@ class Player(pygame.sprite.Sprite):
         weapon.rect.x += self.dx
         weapon.rect.y += self.dy
 
-        # flip image based on mouse pos
-        # TODO:  NOW WE NEED TO CHECK FOR CENTER SCREEN, NOT SPRITE POSITION
+        # flip image based on mouse's screen position
         if pygame.mouse.get_pos()[0] < SCREEN_CENTER[0]:
             self.image = pygame.transform.flip(
                 self.anim.get_frame(), True, False)
         else:
             self.image = self.anim.get_frame()
+    
+    def _draw_rect_offset(self, screen, rect, offset, color='black', width=2):
+        tmp_rect = rect.copy()
+        tmp_rect.topleft = tmp_rect.topleft - offset
+        pygame.draw.rect(screen, color, tmp_rect, width)
 
     def render(self, screen, offset_pos):
         screen.blit(self.image, offset_pos)
-        # TODO: Fix hitbox and image rects.  Should we make them surfaces?
-        #       ex: screen.blit(self.hitbox_image, hitbox_offset_pos)
-        # pygame.draw.rect(screen, 'red', self.hitbox, 4)   # draw hitbox
-        # pygame.draw.rect(screen, 'orange', self.rect, 2)  # draw image rect
+
+        offset = pygame.math.Vector2()
+        offset.x = self.rect.centerx - SCREEN_CENTER[0]
+        offset.y = self.rect.centery - SCREEN_CENTER[1]
+
+        # apply offset then draw player hitbox, image rect
+        self._draw_rect_offset(screen, self.hitbox, offset, 'red', 4)
+        self._draw_rect_offset(screen, self.rect, offset) # use default params
         

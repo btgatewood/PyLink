@@ -27,7 +27,7 @@ while running:
     
     game.update()
     
-    screen.fill('blue')
+    screen.fill('black')
     game.render(screen)
     pygame.display.flip()
 
