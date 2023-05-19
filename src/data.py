@@ -35,8 +35,8 @@ from PIL import Image, ImageCms
 class GraphicsDataBuilder:
     def __init__(self):
         self.root = 'C:/Users/gatew/Projects/PyLink/'
-        self.src_root = self.root + 'rgsdev/'
-        self.dst_root = self.root + 'test_data/'
+        self.src_root = self.root + 'data/rgsdev/'
+        self.dst_root = self.root + 'data/' # TODO: 'data/graphics/'? 'test/'?
 
         profile = ImageCms.createProfile('sRGB')
         self.icc_profile = ImageCms.ImageCmsProfile(profile).tobytes()
@@ -45,7 +45,7 @@ class GraphicsDataBuilder:
         """ Utility function to build the output directory structure. """
         if not os.path.exists(self.dst_root):
             os.mkdir(self.dst_root)
-        for path in ['player/', 'environment/']:  # TODO: , 'extras/', 'weapons/']:
+        for path in ['player/', 'environment/']: # TODO: 'extras/', 'weapons/'
             dst_path = os.path.join(self.dst_root, path)
             if not os.path.exists(dst_path):
                 os.mkdir(dst_path)
@@ -82,7 +82,7 @@ class GraphicsDataBuilder:
                 img256 = self._resize_image(img, 256)
                 img512 = self._resize_image(img, 512)
                 # TODO: rotate texture?
-                # EX: save image in 2 sizes and rotated in 4 directions
+                # # save image in 2 sizes, rotated in 4 directions each
                 # for i in range(4):
                 #     save_image(img256, f'{dst_path}{file}_256_{i}{ext}'
                 #     save_image(img512, f'{dst_path}{file}_512_{i}{ext}'
