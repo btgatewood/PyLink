@@ -46,6 +46,7 @@ class GraphicsDataBuilder:
         if not os.path.exists(self.dst_root):
             os.mkdir(self.dst_root)
         for path in ['player/', 'environment/']: # TODO: 'extras/', 'weapons/'
+            # TODO: delete pre-existing folders?
             dst_path = os.path.join(self.dst_root, path)
             if not os.path.exists(dst_path):
                 os.mkdir(dst_path)
@@ -72,29 +73,29 @@ class GraphicsDataBuilder:
     def _resize_environment_texture(self, file, img):
         dst_path = os.path.join(self.dst_root, 'environment/')
         file, ext = os.path.splitext(file)
+        file = file.rstrip('_white')  # remove color from ground file names
+
         match file:
-            case 'ground_white':
+            case 'ground':
                 # resize background color texture from 2048px to 128px
                 img128 = self._resize_image(img, 128)
                 self._save_image(img128, f'{dst_path}{file}_128{ext}')
-            case 'ground2_white':
+            case 'ground2':
                 # resize ground detail texture from 2048px to various sizes
                 img256 = self._resize_image(img, 256)
                 img512 = self._resize_image(img, 512)
-                # TODO: rotate texture?
-                # # save image in 2 sizes, rotated in 4 directions each
-                # for i in range(4):
-                #     save_image(img256, f'{dst_path}{file}_256_{i}{ext}'
-                #     save_image(img512, f'{dst_path}{file}_512_{i}{ext}'
-                #     if i < 3:
-                #         # -90 degrees counter-clockwise
-                #         img256 = img256.rotate(-90, Image.Resampling.NEAREST)
-                #         img512 = img512.rotate(-90, Image.Resampling.NEAREST)
-                img1028 = self._resize_image(img, 1024)
-                self._save_image(img256, f'{dst_path}{file}_256{ext}')
-                self._save_image(img512, f'{dst_path}{file}_512{ext}')
-                self._save_image(img1028, f'{dst_path}{file}_1028{ext}')
-            case 'ground3_white':
+                img1024 = self._resize_image(img, 1024)
+                for i in range(4):  
+                    # save each image rotated in 4 directions
+                    self._save_image(img256, f'{dst_path}{file}_256_{i}{ext}')
+                    self._save_image(img512, f'{dst_path}{file}_512_{i}{ext}')
+                    self._save_image(img1024, f'{dst_path}{file}_1024_{i}{ext}')
+                    if i < 3:  
+                        # rotate -90 degrees counter-clockwise
+                        img256 = img256.rotate(-90, Image.Resampling.NEAREST)
+                        img512 = img512.rotate(-90, Image.Resampling.NEAREST)
+                        img1024 = img1024.rotate(-90, Image.Resampling.NEAREST)
+            case 'ground3':
                 # resize from 762x735 to nearest pow of 2?
                 img256 = self._resize_image(img, 256)
                 img512 = self._resize_image(img, 512)
@@ -111,6 +112,11 @@ class GraphicsDataBuilder:
             case _:
                 print(f'file not resized: {dst_path}{file}{ext}')
                 return
+        
+        if file in ['ground', 'ground3']:
+            # copy original image to output folder
+            self._save_image(img, f'{dst_path}{file}{ext}')
+
         print(f'file resized: {dst_path}{file}{ext}')
     
     def _resize_environment_textures(self):
@@ -119,7 +125,7 @@ class GraphicsDataBuilder:
             with Image.open(src_path + file) as img:
                 self._resize_environment_texture(file, img)
         
-        # copy a mock player image for tiled map
+        # copy a player image to environment folder for tiled map
         with Image.open(self.dst_root + 'player/idle_0.png') as img:
             self._save_image(img, self.dst_root + 'environment/idle_0.png')
 
