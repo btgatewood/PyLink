@@ -2,4 +2,6 @@
 __pycache__/
 
 data/environment/
+data/extras/
 data/player/
+data/weapons/

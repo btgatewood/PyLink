@@ -16,16 +16,15 @@ Character Options
 
 """
 Notes
-    - TODO: NOTE: weapons are 2048px, poor fit w/player @ 256px; try 128x128px
     - player sprites are ~64x96 with 256x256 textures
     - only the death animation has the player move outside of hitbox
-    - the biggest rocks (128px) are best fit for player (use as walls)
+    - the biggest rocks (128px) are best fit for player (use as walls?)
 """
 
 """
 Thoughts
-    - a tiled map probably isn't the best choice for this game
-    - unless we implement more CQB, topdown shooter mechanics
+    - a tiled map probably isn't the best choice for this game...
+    - unless we implement more CQB-like, topdown shooter mechanics?
 """
 
 import os
@@ -45,7 +44,7 @@ class GraphicsDataBuilder:
         """ Utility function to build the output directory structure. """
         if not os.path.exists(self.dst_root):
             os.mkdir(self.dst_root)
-        for path in ['player/', 'environment/']: # TODO: 'extras/', 'weapons/'
+        for path in ['environment/', 'extras/', 'player/', 'weapons/']:
             # TODO: delete pre-existing folders?
             dst_path = os.path.join(self.dst_root, path)
             if not os.path.exists(dst_path):
@@ -58,15 +57,15 @@ class GraphicsDataBuilder:
     
     def _save_image(self, img, path):
         """ Utility function to save images with the correct srgb profile. """
-        img.save(path, icc_profile = self.icc_profile) 
+        img.save(path, icc_profile = self.icc_profile)
     
-    def _resize_player_animation_frames(self):
-        """ Resize all char anim textures and save in player folder. """
-        src_path = os.path.join(self.src_root, 'char3_no_hands/')
-        dst_path = os.path.join(self.dst_root, 'player/')
+    def _resize_images_dir(self, src_dir, dst_dir, size):
+        """ Utility function to resize all images in a folder to one size. """
+        src_path = os.path.join(self.src_root, src_dir)
+        dst_path = os.path.join(self.dst_root, dst_dir)
         for file in os.listdir(src_path):
             with Image.open(src_path + file) as img:
-                self._save_image(self._resize_image(img, 256), 
+                self._save_image(self._resize_image(img, size), 
                                  f'{dst_path}{file}')
                 print(f'file resized: {dst_path}{file}')
 
@@ -124,18 +123,24 @@ class GraphicsDataBuilder:
         for file in os.listdir(src_path):
             with Image.open(src_path + file) as img:
                 self._resize_environment_texture(file, img)
-        
-        # copy a player image to environment folder for tiled map
-        with Image.open(self.dst_root + 'player/idle_0.png') as img:
-            self._save_image(img, self.dst_root + 'environment/idle_0.png')
 
     def build_data(self):
         """ Main class method; modifies and exports graphics data. """
         self._make_dirs()
-        self._resize_player_animation_frames()
+
         self._resize_environment_textures()
+        
         # TODO: resize extras folder  (bullet, crosshair, and muzzle)
-        # TODO: resize weapons folder (weapons)
+
+        # resize player animation frames
+        self._resize_images_dir('char3_no_hands/', 'player/', 256)
+
+        # resize weapon textures
+        self._resize_images_dir('weapons/', 'weapons/', 128)
+
+        # copy a player image to environment folder for tiled map
+        with Image.open(self.dst_root + 'player/idle_0.png') as img:
+            self._save_image(img, self.dst_root + 'environment/idle_0.png')
 
 
 if __name__ == '__main__':

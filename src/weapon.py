@@ -14,7 +14,7 @@ class Weapon(pygame.sprite.Sprite):
     def __init__(self, position: pygame.Vector2):
         super().__init__()
         # TODO: load animations if we need them
-        self.image = pygame.image.load('data/weaponR1.png')
+        self.image = pygame.image.load('data/weapons/weaponR1.png')
         self.rect = self.image.get_rect(center=position)
         self.rect.y += 40   # align weapon with player sprite
         self.flip_y = False # flag, aiming left if true

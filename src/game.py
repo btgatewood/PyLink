@@ -36,6 +36,6 @@ class Game:
 
         # tint crosshair  # TODO: Use this to tint the base white textures?
         surf = self.cursor.copy()
-        surf.fill((0, 0, 0, 255), None, pygame.BLEND_RGBA_MULT)
-        surf.fill((255, 0, 0, 0), None, pygame.BLEND_RGBA_ADD)  # tint red
+        surf.fill((0, 0, 0, 255), None, pygame.BLEND_RGBA_MULT)  # fill black?
+        surf.fill((255, 0, 0, 0), None, pygame.BLEND_RGBA_ADD)   # tint red?
         screen.blit(surf, self.cursor.get_rect(topleft=pygame.mouse.get_pos()))
