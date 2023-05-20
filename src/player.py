@@ -1,7 +1,34 @@
 import pygame
 
-from anim import Animation
 from config import *
+
+
+class Animation:
+    def __init__(self, anim_name, num_frames):
+        # load images
+        self.frames = []                            # surface list
+        for i in range(num_frames):
+            file = f'data/player/{anim_name}_{i}.png'
+            surface = pygame.image.load(file).convert_alpha()
+            self.frames.append(surface)
+        
+        # setup animation
+        self.prev_time = pygame.time.get_ticks()    # get time in milliseconds
+        self.ms_per_frame = 100                     # animation speed
+        self.frame_index = 0                        # current frame
+
+    def update(self):
+        # update animation
+        if (pygame.time.get_ticks() - self.prev_time) > self.ms_per_frame:
+            if self.frame_index < len(self.frames) - 1:
+                self.frame_index += 1
+            else:
+                self.frame_index = 0
+            # prev_time -= ms_per_frame             # NOTE: interesting bug?
+            self.prev_time = pygame.time.get_ticks()
+    
+    def get_frame(self):
+        return self.frames[self.frame_index]
 
 
 player_anim_data = [  
@@ -72,11 +99,12 @@ class Player(pygame.sprite.Sprite):
         self.hitbox.y += self.dy
         self.rect.center = self.hitbox.midtop
 
-        # move weapon
+        # move weapon sprite
         weapon.rect.x += self.dx
         weapon.rect.y += self.dy
 
         # flip image based on mouse's screen position
+        # TODO: save flipped image?
         if pygame.mouse.get_pos()[0] < SCREEN_CENTER[0]:
             self.image = pygame.transform.flip(
                 self.anim.get_frame(), True, False)

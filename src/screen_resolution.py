@@ -9,7 +9,6 @@
 # 16:9*80  = 1280x720  # NOTE: height % 16 == 0  # 80x45 tiles in map
 # 16:9*60  = 960x540
 
-
 def print_16_9_dimensions_scaled(n):
     width = 16 * n
     height = 9 * n

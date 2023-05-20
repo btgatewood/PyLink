@@ -1,3 +1,6 @@
+import os
+from PIL import Image, ImageCms
+
 """
 Animated Body
     body  x 1
@@ -26,10 +29,6 @@ Thoughts
     - a tiled map probably isn't the best choice for this game...
     - unless we implement more CQB-like, topdown shooter mechanics?
 """
-
-import os
-from PIL import Image, ImageCms
-
 
 class GraphicsDataBuilder:
     def __init__(self):
