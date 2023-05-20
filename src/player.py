@@ -125,5 +125,5 @@ class Player(pygame.sprite.Sprite):
 
         # apply offset then draw player hitbox, image rect
         self._draw_rect_offset(screen, self.hitbox, offset, 'red', 4)
-        self._draw_rect_offset(screen, self.rect, offset) # use default params
+        # self._draw_rect_offset(screen, self.rect, offset) # use default args
         

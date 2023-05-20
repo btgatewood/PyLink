@@ -7,12 +7,11 @@ from weapon import Weapon
 class Game:
     def __init__(self):
         self.background = pygame.image.load('data/background.png').convert()
+        self.cursor = pygame.image.load('data/crosshair32.png').convert_alpha()
 
         world_center = pygame.Vector2(1280, 1280)
         self.player = Player(world_center)
         self.weapon = Weapon(world_center)
-
-        self.cursor = pygame.image.load('data/crosshair32.png').convert_alpha()
 
     def update(self):
         self.player.update(self.weapon)
@@ -35,7 +34,7 @@ class Game:
         offset_pos = self.weapon.rot_rect.topleft - offset
         self.weapon.render(screen, offset_pos)
 
-        # tint crosshair  # TODO: Use this to tint the base white textures?
+        # tint crosshair  # TODO: use this to tint the base white textures?
         surf = self.cursor.copy()
         surf.fill((0, 0, 0, 255), None, pygame.BLEND_RGBA_MULT)  # fill black?
         surf.fill((255, 0, 0, 0), None, pygame.BLEND_RGBA_ADD)   # tint red?
