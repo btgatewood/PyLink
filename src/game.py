@@ -4,12 +4,37 @@ from config import *
 from player import Player
 from weapon import Weapon
 
+
+def init_background_surface():
+    """ Draws a grid or "prototype texture" with alternating tiles. """
+    map_size = 1280                 # grid, surf, bg size
+    tile_size = 64                  # cell, rect size
+    WHITE = pygame.Color('white')   # color 1
+    GREY = pygame.Color('gray')     # color 2
+
+    bg_surf = pygame.Surface((map_size, map_size))  # 1280 = 64 * 20
+    for x in range(0, map_size, tile_size):
+        for y in range(0, map_size, tile_size):
+            rect = pygame.Rect(x, y, tile_size, tile_size)
+            if (x // tile_size) % 2 == 0:
+                if (y // tile_size) % 2:
+                    pygame.draw.rect(bg_surf, GREY, rect)
+                else:
+                    pygame.draw.rect(bg_surf, WHITE, rect)
+            else:
+                if (y // tile_size) % 2:
+                    pygame.draw.rect(bg_surf, WHITE, rect)
+                else:
+                    pygame.draw.rect(bg_surf, GREY, rect)
+    return bg_surf
+
+
 class Game:
     def __init__(self):
-        self.background = pygame.image.load('data/background.png').convert()
+        self.background = init_background_surface()
         self.cursor = pygame.image.load('data/crosshair32.png').convert_alpha()
 
-        world_center = pygame.Vector2(1280, 1280)
+        world_center = pygame.Vector2(640, 640)
         self.player = Player(world_center)
         self.weapon = Weapon(world_center)
 
