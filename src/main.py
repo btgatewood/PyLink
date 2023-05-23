@@ -46,6 +46,6 @@ while running:
     debug('PyLink v0.0.1\nHello, World!')
     pygame.display.flip()
 
-    clock.tick(120)  # set tick rate
+    clock.tick(FPS)  # set tick rate
 
 pygame.quit()

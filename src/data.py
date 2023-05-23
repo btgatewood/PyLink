@@ -66,7 +66,18 @@ class GraphicsDataBuilder:
             with Image.open(src_path + file) as img:
                 self._save_image(self._resize_image(img, size), 
                                  f'{dst_path}{file}')
-                print(f'file resized: {dst_path}{file}')
+                print(f'file resized: {src_dir}{file}')
+    
+    def _resize_weapon_textures(self):
+        src_path = os.path.join(self.src_root, 'weapons/')
+        dst_path = os.path.join(self.dst_root, 'weapons/')
+        for file in os.listdir(src_path):
+            with Image.open(src_path + file) as img:
+                img = img.crop((0, 1024, 2048, 2048))  # remove empty top half
+                img = img.resize((128, 64), Image.Resampling.LANCZOS)
+                self._save_image(img, f'{dst_path}{file}')
+                print(f'file cropped and resized: weapons/{file}')
+
 
     def _resize_environment_texture(self, file, img):
         dst_path = os.path.join(self.dst_root, 'environment/')
@@ -115,7 +126,7 @@ class GraphicsDataBuilder:
             # copy original image to output folder
             self._save_image(img, f'{dst_path}{file}{ext}')
 
-        print(f'file resized: {dst_path}{file}{ext}')
+        print(f'file resized: environment/{file}{ext}')
     
     def _resize_environment_textures(self):
         src_path = os.path.join(self.src_root, 'environment/')
@@ -133,10 +144,10 @@ class GraphicsDataBuilder:
 
         # resize player animation frames
         self._resize_images_dir('char3_no_hands/', 'player/', 256)
-
-        # resize weapon textures
-        self._resize_images_dir('weapons/', 'weapons/', 128)
-
+        
+        # self._resize_weapon_textures()
+        self._resize_images_dir('weapons/', 'weapons/', 128) 
+        
         # copy a player image to environment folder for tiled map
         with Image.open(self.dst_root + 'player/idle_0.png') as img:
             self._save_image(img, self.dst_root + 'environment/idle_0.png')

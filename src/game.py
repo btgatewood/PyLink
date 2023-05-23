@@ -28,6 +28,10 @@ def init_background_surface():
                     pygame.draw.rect(bg_surf, GREY, rect)
     return bg_surf
 
+# TODO: Draw player hands.
+# TODO: Adjust render order for player, weapon, & hands.
+    # Draw weapon first when player is aiming at top-half of screen.
+    # Determine draw order for hands.
 
 class Game:
     def __init__(self):
