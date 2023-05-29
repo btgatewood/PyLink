@@ -67,35 +67,3 @@ class Game:
         surf.fill((0, 0, 0, 255), None, pygame.BLEND_RGBA_MULT)  # fill black?
         surf.fill((255, 0, 0, 0), None, pygame.BLEND_RGBA_ADD)   # tint red?
         screen.blit(surf, self.cursor.get_rect(topleft=pygame.mouse.get_pos()))
-
-
-"""
-class TestPlayerAnimations:  # use this class as Game object in main
-    
-    anim_data = [  # how do static class members work in python?
-        # ('anim_name', num_frames)
-        ('death', 10),
-        ('fall', 5),
-        ('hit', 3),
-        ('idle', 6),
-        # ('jumpEnd', 3),
-        # ('jumpStart', 2),
-        ('roll', 5),
-        ('walk', 8)
-    ]
-
-    def __init__(self):
-        self.animations = []
-        y = 0
-        for data in self.anim_data:
-            self.animations.append(Animation(data[1], data[0], (0, y)))
-            y += 128
-    
-    def update(self):
-        for anim in self.animations:
-            anim.update()
-    
-    def render(self, screen):
-        for anim in self.animations:
-            anim.render(screen)
-"""
