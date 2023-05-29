@@ -4,7 +4,6 @@ from config import *
 from player import Player
 from weapon import Weapon
 
-
 def init_background_surface():
     """ Draws a grid or "prototype texture" with alternating tiles. """
     map_size = 1280                 # grid, surf, bg size
@@ -63,7 +62,7 @@ class Game:
         offset_pos = self.weapon.rot_rect.topleft - offset
         self.weapon.render(screen, offset_pos)
 
-        # tint crosshair  # TODO: use this to tint the base white textures?
+        # tint crosshair sprite
         surf = self.cursor.copy()
         surf.fill((0, 0, 0, 255), None, pygame.BLEND_RGBA_MULT)  # fill black?
         surf.fill((255, 0, 0, 0), None, pygame.BLEND_RGBA_ADD)   # tint red?
