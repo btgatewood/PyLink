@@ -1,11 +1,11 @@
 import pygame
 
-MAX_LINES = 8
+MAX_LINES = 16
 
 # setup pygame.font.render() args
 antialias = True
 color = 'white'
-bgcolor = 'black'
+bgcolor = 'black'  # used for optimization
 wraplength = 0  # max width (in pixels) before wrapping to new line
 
 class Console:
