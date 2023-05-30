@@ -1,5 +1,7 @@
 import pygame
 
+MAX_LINES = 8
+
 # setup pygame.font.render() args
 antialias = True
 color = 'white'
@@ -9,15 +11,20 @@ wraplength = 0  # max width (in pixels) before wrapping to new line
 class Console:
     def __init__(self):
         self.font = pygame.font.Font(None, 24)
+        self.lines = []
         self.text = None
         self.surf = None
         self.rect = None
     
     def add_text(self, msg):  # add message to console
-        if self.text == None:
-            self.text = msg
-        else:
-            self.text += '\n' + msg
+        if len(self.lines) == MAX_LINES:
+            self.lines.pop(0)  # remove first element
+        self.lines.append(msg)
+
+        self.text = ''
+        for line in self.lines:
+            self.text += line + '\n'
+
         self.surf = self.font.render(self.text, antialias, color)
         self.rect = self.surf.get_rect(topleft = (10,10))
     

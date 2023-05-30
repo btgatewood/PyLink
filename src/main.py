@@ -5,10 +5,10 @@ import pygame
 
 from debug import Console
 
-UPDATES_PER_SECOND = 60.0
+UPDATES_PER_SECOND = 100.0
 SECONDS_PER_UPDATE = 1.0 / UPDATES_PER_SECOND
 
-MAX_RENDERS_PER_SECOND = 420.0
+MAX_RENDERS_PER_SECOND = 144.0
 MIN_SECONDS_PER_RENDER = 1.0 / MAX_RENDERS_PER_SECOND
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = '1, 32'  # set window position
@@ -31,11 +31,12 @@ update_count = 0
 render_count = 0
 
 while running:
-    # events/input
+    # events
     for event in pygame.event.get():
         if event.type == pygame.QUIT: # the user clicked X to close the window
             running = False
     
+    # input
     keys = pygame.key.get_pressed()
     if keys[pygame.K_ESCAPE]:
         running = False
