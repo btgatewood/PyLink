@@ -1,3 +1,6 @@
+''' main_v3.py uses the time.perf_counter() function to limit ticks and fps '''
+''' the average ticks per second and fps is exactly 60, 420 on the laptop '''
+
 import os
 import time
 
@@ -21,7 +24,8 @@ console.add_text('PyLink v0.0.1')
 console.add_text('Hello, World!')
 
 screen = pygame.display.set_mode((1280, 720))
-previous_time = time.perf_counter()
+# clock = pygame.time.Clock()
+previous_time = time.perf_counter()  # "in fractional seconds"
 update_timer = 0
 render_timer = 0
 app_timer = 0
@@ -42,7 +46,7 @@ while running:
     
     # time
     current_time = time.perf_counter()
-    elapsed_time = current_time - previous_time # "in fractional seconds"
+    elapsed_time = current_time - previous_time
     previous_time = current_time
 
     # update

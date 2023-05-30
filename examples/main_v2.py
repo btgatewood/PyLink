@@ -1,26 +1,25 @@
+''' main_v2.py uses the time.perf_counter() function to limit updates'''
+''' the average framerate is over 450 fps on the laptop '''
+''' the average ticks per second is exactly 60 on the laptop '''
+
 import os
 import time
 
 import pygame
 
-from debug import Console
-
-UPDATES_PER_SECOND = 60.0
-SECONDS_PER_UPDATE = 1.0 / UPDATES_PER_SECOND
-
-MAX_RENDERS_PER_SECOND = 420.0
-MIN_SECONDS_PER_RENDER = 1.0 / MAX_RENDERS_PER_SECOND
+import debug
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = '1, 32'  # set window position
 
 pygame.init()
 pygame.display.set_caption('PyLink v0.0.1')
 
-console = Console()
+console = debug.Console()
 console.add_text('PyLink v0.0.1')
 console.add_text('Hello, World!')
 
 screen = pygame.display.set_mode((1280, 720))
+# clock = pygame.time.Clock()
 previous_time = time.perf_counter()
 update_timer = 0
 render_timer = 0
@@ -42,25 +41,25 @@ while running:
     
     # time
     current_time = time.perf_counter()
-    elapsed_time = current_time - previous_time # "in fractional seconds"
+    elapsed_time = current_time - previous_time
     previous_time = current_time
 
     # update
     update_timer += elapsed_time
-    while update_timer >= SECONDS_PER_UPDATE:
-        update_timer -= SECONDS_PER_UPDATE
+    while update_timer >= 1 / 60:
+        update_timer -= 1 / 60
         update_count += 1
         # TODO: game.update()
     
     # render
     render_timer += elapsed_time
-    if render_timer >= MIN_SECONDS_PER_RENDER:
-        render_timer -= MIN_SECONDS_PER_RENDER
-        render_count += 1
-        screen.fill('black')   # clear the last frame
-        # TODO: game.render()  # RENDER YOUR GAME HERE
-        console.draw_text(screen)
-        pygame.display.flip()  # display the next frame
+    # TODO: cap frame rate
+    # if render_timer >= min render time
+    render_count += 1
+    screen.fill('black')   # clear the last frame
+    # TODO: game.render()  # RENDER YOUR GAME HERE
+    console.draw_text(screen)
+    pygame.display.flip()  # display the next frame
 
     # process data
     app_timer += elapsed_time
