@@ -3,12 +3,12 @@ import time
 
 import pygame
 
-from debug import Console
-from game import ClearviewFarmGame
+from console import Console
+from game import ClearviewFarm
 
 # config
 UPDATES_PER_SECOND = 100.0
-SECONDS_PER_UPDATE = 1.0 / UPDATES_PER_SECOND  # 0.01 @ 100 ticks
+SECONDS_PER_UPDATE = 1.0 / UPDATES_PER_SECOND          # 0.01 @ 100 ticks
 
 MAX_RENDERS_PER_SECOND = 1000.0
 MIN_SECONDS_PER_RENDER = 1.0 / MAX_RENDERS_PER_SECOND  # 0.001 @ 1000 fps
@@ -21,19 +21,19 @@ pygame.display.set_caption('PyLink v0.0.1')
 screen = pygame.display.set_mode((1280, 720))
 
 console = Console()
-console.add_text('PyLink v0.0.1')
-console.add_text('Hello, World!')
+console.add_message('PyLink v0.0.1')
 
-game = ClearviewFarmGame(console)  # TODO: game.setup()?
+game = ClearviewFarm(console)
 
 # init clock
-running = True
-previous_time = time.perf_counter()
 update_timer = 0
 update_count = 0
 render_timer = 0
 render_count = 0
-app_timer = 0
+main_timer = 0
+
+previous_time = time.perf_counter()
+running = True
 
 while running:
     # events
@@ -65,15 +65,14 @@ while running:
         render_count += 1
         screen.fill('black')   # clear the last frame
         game.render()          # RENDER YOUR GAME HERE
-        console.draw_text(screen)
+        console.render(screen)
         pygame.display.flip()  # display the next frame
 
     # core data
-    app_timer += elapsed_time
-    if app_timer > 1.0:
-        app_timer -= 1.0
-        # TODO: move fps text out of console, to top right of screen
-        console.add_text(f'{update_count} hz, {render_count} fps')
+    main_timer += elapsed_time
+    if main_timer > 1.0:
+        main_timer -= 1.0
+        console.set_fps_text(f'{update_count} hz, {render_count} fps')
         update_count = 0
         render_count = 0
 
