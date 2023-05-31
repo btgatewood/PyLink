@@ -1,6 +1,6 @@
 ''' main_v2.py uses the time.perf_counter() function to limit updates'''
-''' the average framerate is over 450 fps on the laptop '''
-''' the average ticks per second is exactly 60 on the laptop '''
+''' the average framerate is 450+ fps on the laptop, 1800+ on the desktop '''
+''' the average ticks per second is exactly 60 on the laptop & desktop '''
 
 import os
 import time

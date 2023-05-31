@@ -1,5 +1,5 @@
 ''' main_v1.py uses the pygame.time.Clock.tick() method to limit fps '''
-''' the average framerate is about 60.25 fps on the laptop '''
+''' the average framerate is about 60.25 fps on the laptop & desktop '''
 
 import os
 import time
