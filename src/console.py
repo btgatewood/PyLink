@@ -11,7 +11,7 @@ wraplength = 0     # max width (in pixels) before wrapping to new line
 class Console:
     def __init__(self):
         self.font = pygame.font.Font(None, 24)  # TODO: use custom font
-        self.messages = []
+        self.messages = []  # TODO: set timer for message lifespan, fade out?
         self.surf = None
         self.rect = None
         self.fps_surf = None

@@ -4,14 +4,14 @@ import time
 import pygame
 
 from console import Console
-from game import ClearviewFarm
+from game import ClearviewFarmGame
 
 # config
 UPDATES_PER_SECOND = 100.0
-SECONDS_PER_UPDATE = 1.0 / UPDATES_PER_SECOND          # 0.01 @ 100 ticks
+SECONDS_PER_UPDATE = 1.0 / UPDATES_PER_SECOND
 
-MAX_RENDERS_PER_SECOND = 1000.0
-MIN_SECONDS_PER_RENDER = 1.0 / MAX_RENDERS_PER_SECOND  # 0.001 @ 1000 fps
+MAX_RENDERS_PER_SECOND = 500.0
+MIN_SECONDS_PER_RENDER = 1.0 / MAX_RENDERS_PER_SECOND
 
 # init app
 os.environ['SDL_VIDEO_WINDOW_POS'] = '1, 32'  # set window position
@@ -23,7 +23,7 @@ screen = pygame.display.set_mode((1280, 720))
 console = Console()
 console.add_message('PyLink v0.0.1')
 
-game = ClearviewFarm(console)
+game = ClearviewFarmGame(console)
 
 # init clock
 update_timer = 0
@@ -36,19 +36,19 @@ previous_time = time.perf_counter()
 running = True
 
 while running:
-    # events
+    # pygame events
     for event in pygame.event.get():
-        if event.type == pygame.QUIT: # the user clicked X to close the window
+        if event.type == pygame.QUIT:  # the user clicked X to close the window
             running = False
     
-    # input
+    # keyboard input
     keys = pygame.key.get_pressed()
     if keys[pygame.K_ESCAPE]:
         running = False
     
     # time
-    current_time = time.perf_counter()
-    elapsed_time = current_time - previous_time # "in fractional seconds"
+    current_time = time.perf_counter()  # time measured "in fractional seconds"
+    elapsed_time = current_time - previous_time
     previous_time = current_time
 
     # update
@@ -72,7 +72,7 @@ while running:
     main_timer += elapsed_time
     if main_timer > 1.0:
         main_timer -= 1.0
-        console.set_fps_text(f'{update_count} hz, {render_count} fps')
+        console.set_fps_text(f'{update_count}hz {render_count}fps')
         update_count = 0
         render_count = 0
 
