@@ -1,0 +1,36 @@
+2023-06-03
+    - Q: Is it better to resize images externally or using pygame.transform?
+        - A: Quick googling makes it sound like it's better to scale images after
+            loading.  Also, pygame-ce has recently implemented better scaling.
+    - NOTE: Sunnyside World character frames are 96x64.  The actual character is
+        much smaller (~16x16).  So, we will need to create a custom hitbox for 
+        everything...or use pixel-perfect collision detection?
+    - NOTE: We can change whether aseprite outputs json data as a dict or list.
+    
+    - TODO: Move console to bottom left of screen.
+
+2023-06-02
+    - Changed asset pack for Clearview Farm game to Sunnyside World assets (from Cozy Farm)
+    - Q: Is it better to use spritesheets or individual images in pygame?
+        - Spritesheets optimize image loading.
+        - Q: Do spritesheets offer a performance bonus when rendering?
+    - We have 3 options for animating character sprites (ranked)...
+        1. Spritesheet for each animation (only option w/o aseprite).
+        2. Full spritesheet with all animations and json data to automate loading.
+        3. Separate images for each frame. 
+    - Q: Should we use pillow to layer and resize character spritesheets?
+        - Or use aseprite (and scripting) to layer and resize anims?
+    - The original aseprite file contains all layers and details.
+    - The condensed aseprite file has merged layers and trims the sprite size.
+    - Spritesheet json data:
+        - frame == position in spritesheet (x,y) & size of frame (w,h)
+        - sprite_source_size == (16, 0, 80, 64)  <- Trimmed.
+        - source_size == (96, 64)  <- Basic sprite size.
+        - duration == 75 <- In milliseconds.
+    
+    - TODO: Make console a global singleton.
+    - TODO: Merge PyLink and GameAssets projects.
+        - Use former GameAssets dir for storage of original (source) assets only.
+        - Move all asset manipulation and organization to PyLink project.
+        - Make it an "engine feature" -> build a toolset for asset modification.
+    

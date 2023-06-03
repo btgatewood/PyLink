@@ -1,8 +1,7 @@
 import pygame
 
 from console import Console
-
-SCREEN_CENTER = (1280 // 2, 720 // 2)  # hack
+from player import Player
 
 class ClearviewFarmGame:
     def __init__(self, console: Console):
@@ -12,20 +11,16 @@ class ClearviewFarmGame:
         self.console.add_message('Clearview Farm v0.0.1')
         self.screen = pygame.display.get_surface()
 
-        # self.sprites = pygame.sprite.Group()
-        # self.sprites.add(self.player)
+        self.player = Player()
 
-        self.image = pygame.image.load('data/SunnysideWorld/player_walk.png')
-        self.image = pygame.transform.scale_by(self.image, 3)  # 48x48
-        self.image = self.image.convert_alpha()  # do we need to reassign?
-        self.rect = self.image.get_rect(center = SCREEN_CENTER)
+        self.sprites = pygame.sprite.Group()
+        self.sprites.add(self.player)
 
-    def update(self):
-        pass
+    def update(self, delta_time):
+        self.player.update(delta_time)
 
     def render(self):
-        # self.sprites.draw(self.screen)
-        self.screen.blit(self.image, self.rect)
+        self.sprites.draw(self.screen)
 
 
 if __name__ == '__main__':  # hack for vscode

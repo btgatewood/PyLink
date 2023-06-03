@@ -9,6 +9,8 @@ from game import ClearviewFarmGame
 # config
 UPDATES_PER_SECOND = 100.0
 SECONDS_PER_UPDATE = 1.0 / UPDATES_PER_SECOND
+print(SECONDS_PER_UPDATE)
+print(SECONDS_PER_UPDATE * 1000)
 
 MAX_RENDERS_PER_SECOND = 500.0
 MIN_SECONDS_PER_RENDER = 1.0 / MAX_RENDERS_PER_SECOND
@@ -56,7 +58,7 @@ while running:
     while update_timer >= SECONDS_PER_UPDATE:
         update_timer -= SECONDS_PER_UPDATE
         update_count += 1
-        game.update()
+        game.update(SECONDS_PER_UPDATE * 1000)
     
     # render
     render_timer += elapsed_time
