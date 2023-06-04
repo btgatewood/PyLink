@@ -5,7 +5,6 @@ from player import Player
 
 class ClearviewFarmGame:
     def __init__(self, console: Console):
-        # basic game setup
         super().__init__()
         self.console = console
         self.console.add_message('Clearview Farm v0.0.1')
