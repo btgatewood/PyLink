@@ -1,3 +1,18 @@
+2023-06-05
+    - Researched pygame's new FRect's after watching Clear Codes framerate tutorial.
+    - NOTE: Keep position data separate from the sprite's rect object.
+        - We should use a separate Vector2 or FRect object to hold position data.
+        - This avoids floating point truncation when updating based on delta_time.
+        - We can use python's round() function to keep more precise position info.
+    - NOTE: Converting from FRect to Rect truncates floats instead of rounding.
+
+2023-06-04
+    - Q: Should we pass delta_time as seconds or milliseconds?
+        - Pygame and SDL represent time in milliseconds.
+        - The Clear Code tutorial converts delta time to seconds.
+        - A: Use seconds.  The Clear Code tutorial about framerate explains this.
+
+
 2023-06-03
     - Q: Is it better to resize images externally or using pygame.transform?
         - A: Quick googling makes it sound like it's better to scale images after
@@ -8,6 +23,7 @@
     - NOTE: We can change whether aseprite outputs json data as a dict or list.
     
     - TODO: Move console to bottom left of screen.
+
 
 2023-06-02
     - Changed asset pack for Clearview Farm game to Sunnyside World assets (from Cozy Farm)

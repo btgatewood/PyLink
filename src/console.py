@@ -12,10 +12,12 @@ class Console:
     def __init__(self):
         self.font = pygame.font.Font(None, 24)  # TODO: use custom font
         self.messages = []  # TODO: set timer for message lifespan, fade out?
-        self.surf = None
-        self.rect = None
-        self.fps_surf = None
-        self.fps_rect = None
+        self.surf = pygame.surface.Surface((0,0))
+        self.rect = self.surf.get_rect()
+        self.fps_surf = pygame.surface.Surface((0,0))
+        self.fps_rect = self.surf.get_rect()
+        self.debug_surf = pygame.surface.Surface((0,0))
+        self.debug_rect = self.surf.get_rect()
     
     def add_message(self, msg):
         if len(self.messages) == MAX_LINES:
@@ -33,8 +35,14 @@ class Console:
         self.fps_surf = self.font.render(text, antialias, color)
         self.fps_rect = self.fps_surf.get_rect(
             topright = (1280 - 10, 10))  # TODO: use screen width
+    
+    def set_debug_text(self, text):
+        self.debug_surf = self.font.render(text, antialias, color)
+        self.debug_rect = self.debug_surf.get_rect(
+            bottomright = (1280 - 10, 720 - 10)
+        )
 
     def render(self, screen):
         screen.blit(self.surf, self.rect)
-        if self.fps_surf != None:
-            screen.blit(self.fps_surf, self.fps_rect)
+        screen.blit(self.fps_surf, self.fps_rect)
+        screen.blit(self.debug_surf, self.debug_rect)
