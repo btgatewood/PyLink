@@ -13,7 +13,7 @@ class ClearviewFarmGame:
 
         # load background
         # TODO: util function to load images -> resource manager
-        self.bg_surf = pygame.image.load('data/background.png').convert_alpha()
+        self.bg_surf = pygame.image.load('data/background.png').convert()
         self.bg_surf = pygame.transform.scale_by(self.bg_surf, SCALE_FACTOR)
         self.bg_rect = self.bg_surf.get_rect()
 

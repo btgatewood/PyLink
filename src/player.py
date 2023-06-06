@@ -1,7 +1,7 @@
 import pygame
 
 from config import *
-from data import load_character_anim_data, load_twf_character_data
+from data import load_character_anim_data, load_character_spritesheet
 
 
 class Player(pygame.sprite.Sprite):
@@ -15,11 +15,13 @@ class Player(pygame.sprite.Sprite):
 
         # setup graphics and anim data
         # self.anim_frames = load_character_anim_data()
-        self.anim_frames = load_twf_character_data()
-        self.anim = self.anim_frames['idle']  # NOTE: Change animation.
-        self.frame = 0                        # NOTE: Reset animation.
+        self.anim_frames = load_character_spritesheet()
+        self.anim = self.anim_frames['idle_right']  # NOTE: Change animation.
+        self.frame = 0                              # NOTE: Reset animation.
         self.frame_timer = 0
-        self.frame_duration = 0.075  # in seconds (75 ms per frame)
+        # self.frame_duration = 0.075  # in seconds (75 ms per frame)
+        self.frame_duration = 0.3  # idle
+        # self.frame_duration = 0.1  # walk
 
         # setup sprite data
         self.image = self.anim[self.frame]

@@ -40,24 +40,40 @@ def load_character_anim_data():
     
     return gfx_data
 
-def load_twf_character_data():
-    spritesheet = pygame.image.load('data/walk and idle.png').convert_alpha()
-    anim_dict = {'idle': [],
-                 'left': [],
-                 'right': [] }  # TODO: Make values lists of frame surfaces.
-    
-    sz_t = 24  # tile size, anim frames are 24x24
-    idle1 = pygame.Rect((sz_t * 0,0), (sz_t,sz_t))
-    idle2 = pygame.Rect((sz_t * 1,0), (sz_t,sz_t))
-    idle3 = pygame.Rect((sz_t * 2,0), (sz_t,sz_t))
-    idle4 = pygame.Rect((sz_t * 3,0), (sz_t,sz_t))
 
-    # load idle animation
+SIZE = 24  # tile size, anim frames are 24x24
+
+def load_frame(source, area):
+    frame = pygame.Surface((SIZE,SIZE))
+    frame.set_colorkey((0,0,0))
+    frame.blit(source, (0,0), area)
+    frame = pygame.transform.scale_by(frame, SCALE_FACTOR)
+    return frame
+
+def load_character_spritesheet():
+    spritesheet = pygame.image.load('data/walk and idle.png').convert_alpha()
+    anim_dict = {'idle_left': [],
+                 'idle_right': [],
+                 'walk_left': [],
+                 'walk_right': [] }  # TODO: Make values lists of frame surfaces.
+
+    # load idle animations
     for i in range(4):
-        frame = pygame.Surface((sz_t,sz_t))
-        frame_area = pygame.Rect((sz_t * i, 0), (sz_t,sz_t))
-        frame.blit(spritesheet, (0,0), frame_area)
-        frame = pygame.transform.scale_by(frame, SCALE_FACTOR)
-        anim_dict['idle'].append(frame)
+        frame_rect = pygame.Rect((SIZE * i, 0), (SIZE,SIZE))
+        frame = load_frame(spritesheet, frame_rect)
+        if i < 2:
+            anim_dict['idle_left'].append(frame)
+        else:
+            anim_dict['idle_right'].append(frame)
+    
+    # load walk animations
+    for i in range(8):
+        frame_rect = pygame.Rect((SIZE * i, SIZE), (SIZE,SIZE))
+        frame = load_frame(spritesheet, frame_rect)
+        anim_dict['walk_left'].append(frame)
+
+        frame_rect = pygame.Rect((SIZE * i, SIZE * 2), (SIZE,SIZE))
+        frame = load_frame(spritesheet, frame_rect)
+        anim_dict['walk_right'].append(frame)
     
     return anim_dict

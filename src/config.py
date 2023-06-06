@@ -12,4 +12,4 @@ CONSOLE_MAX_LINES = 8
 
 SCALE_FACTOR = 3    # 16x16 * 3 == 48x48
 
-PLAYER_SPEED = 250  # pixels per second
+PLAYER_SPEED = 200  # pixels per second
