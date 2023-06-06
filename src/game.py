@@ -16,7 +16,7 @@ class ClearviewFarmGame:
         self.sprites.add(self.player)
 
     def update(self, delta_time):
-        self.player.update(delta_time)
+        self.sprites.update(delta_time)
 
     def render(self):
         self.sprites.draw(self.screen)

@@ -54,7 +54,6 @@ while running:
     # update
     update_timer += elapsed_time
     while update_timer >= SECONDS_PER_UPDATE:
-        # console.set_debug_text(str(update_timer))
         update_timer -= SECONDS_PER_UPDATE
         update_count += 1
         game.update(SECONDS_PER_UPDATE)
