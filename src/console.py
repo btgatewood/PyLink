@@ -1,12 +1,15 @@
 import pygame
 
-MAX_LINES = 8
+from config import *
+
+# TODO: Use custom font.
 
 # setup pygame.font.render() args
 antialias = True
-color = 'white'
+color = 'black'  # 'white'
 bgcolor = 'black'  # can be used for optimization
 wraplength = 0     # max width (in pixels) before wrapping to new line
+
 
 class Console:
     def __init__(self):
@@ -19,7 +22,7 @@ class Console:
         self.fps_rect = self.surf.get_rect()
     
     def add_message(self, msg):
-        if len(self.messages) == MAX_LINES:
+        if len(self.messages) == CONSOLE_MAX_LINES:
             self.messages.pop(0)  # remove first element
         self.messages.append(msg)
 

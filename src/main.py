@@ -3,25 +3,20 @@ import time
 
 import pygame
 
+from config import *
 from console import Console
 from game import ClearviewFarmGame
 
-# config
-UPDATES_PER_SECOND = 60 # 100.0
-SECONDS_PER_UPDATE = 1.0 / UPDATES_PER_SECOND
-
-MAX_RENDERS_PER_SECOND = 500.0
-MIN_SECONDS_PER_RENDER = 1.0 / MAX_RENDERS_PER_SECOND
 
 # init app
 os.environ['SDL_VIDEO_WINDOW_POS'] = '1, 32'  # set window position
 
 pygame.init()
 pygame.display.set_caption('PyLink v0.0.1')
-screen = pygame.display.set_mode((1280, 720))
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 console = Console()
-console.add_message('PyLink v0.0.1')
+console.add_message('PyLink v0.1')
 
 game = ClearviewFarmGame(console)
 
@@ -68,7 +63,7 @@ while running:
         console.render(screen)
         pygame.display.flip()  # display the next frame
 
-    # core data
+    # core stats
     main_timer += elapsed_time
     if main_timer > 1.0:
         main_timer -= 1.0
