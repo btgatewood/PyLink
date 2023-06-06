@@ -1,5 +1,5 @@
 .venv/
 __pycache__/
 
-data/Human/
+data/
 shmup-survivor/

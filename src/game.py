@@ -10,7 +10,7 @@ class ClearviewFarmGame:
         self.console.add_message('Clearview Farm v0.0.1')
         self.screen = pygame.display.get_surface()
 
-        self.player = Player()
+        self.player = Player(console)
 
         self.sprites = pygame.sprite.Group()
         self.sprites.add(self.player)

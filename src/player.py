@@ -94,7 +94,7 @@ class Player(pygame.sprite.Sprite):
 
     def update(self, delta_time):
         self.input()
-        self.move()
+        self.move(delta_time)
 
         # animate
         self.frame_timer += delta_time
