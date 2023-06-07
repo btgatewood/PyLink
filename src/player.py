@@ -33,9 +33,6 @@ def load_character_anim_data():
             frame.blit(spritesheet, (0,0), area)
             frame = pygame.transform.scale_by(frame, SCALE_FACTOR)
             anim_dict[anim_name].append(frame)
-
-    for key, value in anim_dict.items():
-        print(key + ', ' + str(len(value)))
     
     return anim_dict
 
@@ -51,8 +48,8 @@ class Player(pygame.sprite.Sprite):
 
         # setup graphics and anim data
         self.anim_frames = load_character_anim_data()
-        self.anim = self.anim_frames['idle']  # NOTE: Change animation.
-        self.frame = 0                        # NOTE: Reset animation.
+        self.anim = self.anim_frames['idle']  # NOTE: How to change animation.
+        self.frame = 0                        # NOTE: How to reset animation.
         self.frame_timer = 0
         self.frame_duration = 0.075  # in seconds (75 ms per frame)
 
