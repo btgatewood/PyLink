@@ -3,6 +3,7 @@ import pygame
 from config import *
 
 # TODO: Use custom font.
+# TODO: Draw transparent background behind text.
 
 # setup pygame.font.render() args
 antialias = True
