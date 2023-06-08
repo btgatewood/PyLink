@@ -4,7 +4,7 @@ import time
 import pygame
 
 from config import *
-from console import Console
+from debug import Console
 from game import ClearviewFarmGame
 
 

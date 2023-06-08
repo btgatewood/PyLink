@@ -7,7 +7,7 @@ from config import *
 
 # setup pygame.font.render() args
 antialias = True
-color = 'black'  # 'white'
+color = 'white'
 bgcolor = 'black'  # can be used for optimization
 wraplength = 0     # max width (in pixels) before wrapping to new line
 
@@ -31,13 +31,13 @@ class Console:
         for line in self.messages:
             text += line + '\n'
 
-        self.surf = self.font.render(text, antialias, color)
+        self.surf = self.font.render(text, antialias, color, bgcolor)
         self.rect = self.surf.get_rect(
             bottomleft = (10, 720 - 10)  # TODO: use screen height
         )
     
     def set_fps_text(self, text):
-        self.fps_surf = self.font.render(text, antialias, color)
+        self.fps_surf = self.font.render(text, antialias, color, bgcolor)
         self.fps_rect = self.fps_surf.get_rect(
             topright = (1280 - 10, 10)  # TODO: use screen width 
         )

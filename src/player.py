@@ -48,8 +48,8 @@ class Player(pygame.sprite.Sprite):
 
         # setup graphics and anim data
         self.anim_frames = load_character_anim_data()
-        self.anim = self.anim_frames['idle']  # NOTE: How to change animation.
-        self.frame = 0                        # NOTE: How to reset animation.
+        self.anim = self.anim_frames['walk']  # NOTE: How to change animation!
+        self.frame = 0                        # NOTE: How to reset animation!
         self.frame_timer = 0
         self.frame_duration = 0.075  # in seconds (75 ms per frame)
 

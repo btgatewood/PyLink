@@ -2,11 +2,11 @@ import pygame
 
 from camera import CameraGroup
 from config import *
-from console import Console
+from debug import Console
 from player import Player
 
 
-class Tree(pygame.sprite.Sprite):
+class Trees(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.image = pygame.image.load('data/spr_deco_tree_01_strip4.png')
@@ -26,13 +26,13 @@ class ClearviewFarmGame:
         self.sprites = CameraGroup()
         self.player = Player(console)
         self.sprites.add(self.player)
-        self.sprites.add(Tree())
+        self.sprites.add(Trees())
 
     def update(self, delta_time):
         self.sprites.update(delta_time)
 
     def render(self):
-        self.sprites.draw(self.player)
+        self.sprites.draw(self.player)  # NOTE: Camera uses player pos.
 
 
 if __name__ == '__main__':  # hack for vscode
