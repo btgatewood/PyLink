@@ -13,7 +13,8 @@ class Trees(pygame.sprite.Sprite):
         self.image = self.image.convert_alpha()
         self.image = pygame.transform.scale_by(self.image, SCALE_FACTOR)
         self.rect = self.image.get_rect(center = SCREEN_CENTER)
-        self.rect.y += 50
+        self.rect.x -= 50
+        self.rect.y += 200
 
 
 class ClearviewFarmGame:
