@@ -2,7 +2,7 @@ import pygame
 
 from camera import CameraGroup
 from config import *
-from debug import Console
+from debug import console
 from player import Player
 
 
@@ -18,15 +18,14 @@ class Trees(pygame.sprite.Sprite):
 
 
 class ClearviewFarmGame:
-    def __init__(self, console: Console):
+    def __init__(self):
         super().__init__()
-        self.console = console
-        self.console.add_message('Clearview Farm v0.1')
+        console.add_message('Clearview Farm v0.1')
         self.screen = pygame.display.get_surface()
 
         # load sprites & groups
         self.sprites = CameraGroup()
-        self.player = Player(console)
+        self.player = Player()
         self.sprites.add(self.player)
         self.sprites.add(Trees())
 

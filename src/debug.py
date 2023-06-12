@@ -1,4 +1,5 @@
 import pygame
+# pygame.init()
 
 from config import *
 
@@ -12,7 +13,7 @@ wraplength = SCREEN_WIDTH // 3  # max width (in pixels) before wrapping to new l
 
 class Console:
     def __init__(self):
-        self.font = pygame.font.Font(None, 24)  # TODO: use custom font
+        self.font = pygame.font.Font(None, 24)  # TODO: use custom font.
         self.messages = []
         # TODO: set timers for message lifespans & fade out
         self.surf = pygame.surface.Surface((0,0))
@@ -46,8 +47,7 @@ class Console:
 
     def set_fps_text(self, text):
         # self.fps_text = text
-        self.fps_surf = self.font.render(text, antialias, color, 
-                                         bgcolor).convert_alpha()
+        self.fps_surf = self.font.render(text, antialias, color).convert_alpha()
         
         # create transparent, inflated background  # TODO: Refactor.
         self.fps_bg_rect = self.fps_surf.get_rect()
@@ -64,7 +64,6 @@ class Console:
         screen.blit(self.fps_bg_surf, self.fps_bg_rect)
         screen.blit(self.fps_surf, self.fps_rect)
 
-    
     ''' This method inverted the color of the fps text based on the current
             screen but the visual result wasn't very appealing. '''
     # def render_fps_text(self, screen):
@@ -75,3 +74,6 @@ class Console:
     #         topright = (SCREEN_WIDTH - 10, 10))
     #     self.fps_surf.blit(screen, (0,0), self.fps_rect, pygame.BLEND_RGB_SUB)
     #     screen.blit(self.fps_surf, self.fps_rect)
+
+
+console = Console()

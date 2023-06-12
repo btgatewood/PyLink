@@ -1,24 +1,19 @@
 import os
-import time
-
-import pygame
-
-from config import *
-from debug import Console
-from game import ClearviewFarmGame
-
-
-# init app
 os.environ['SDL_VIDEO_WINDOW_POS'] = '1, 32'  # set window position
 
+import time
+import pygame
 pygame.init()
 pygame.display.set_caption('PyLink v0.0.1')
+
+from config import *
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-console = Console()
+from debug import console
 console.add_message('PyLink v0.1')
 
-game = ClearviewFarmGame(console)
+from game import ClearviewFarmGame
+game = ClearviewFarmGame()
 
 # init clock
 update_timer = 0
@@ -27,6 +22,7 @@ render_timer = 0
 render_count = 0
 main_timer = 0
 
+# start main game loop
 previous_time = time.perf_counter()
 running = True
 
