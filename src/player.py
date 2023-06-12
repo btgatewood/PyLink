@@ -34,8 +34,8 @@ def load_character_anim_data():
             frame = pygame.transform.scale_by(frame, SCALE_FACTOR)
             anim_dict[anim_name].append(frame)
     
-    for key in anim_dict.keys():
-        print(key)
+    # for key in anim_dict.keys():
+    #     print(key)
 
     return anim_dict
 
@@ -54,8 +54,10 @@ class Player(pygame.sprite.Sprite):
         self.status = 'idle'                          # set player state
 
         console.add_message('Loaded player animations: ')
-        console.add_message(str(list(self.animations.keys())))
-        console.add_message('Hello, Ashley!!!')
+        msg = ''
+        for anim in self.animations.keys():
+            msg += anim + ', '
+        console.add_message(msg)
 
         self.current_anim = self.animations[self.status]  # NOTE: How to change animation!
         self.frame_index = 0                              # NOTE: How to reset animation!
