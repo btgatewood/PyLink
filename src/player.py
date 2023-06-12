@@ -34,6 +34,9 @@ def load_character_anim_data():
             frame = pygame.transform.scale_by(frame, SCALE_FACTOR)
             anim_dict[anim_name].append(frame)
     
+    for key in anim_dict.keys():
+        print(key)
+
     return anim_dict
 
 
@@ -47,14 +50,20 @@ class Player(pygame.sprite.Sprite):
         self.speed = PLAYER_SPEED
 
         # setup graphics and anim data
-        self.anim_frames = load_character_anim_data()
-        self.anim = self.anim_frames['walk']  # NOTE: How to change animation!
-        self.frame = 0                        # NOTE: How to reset animation!
+        self.animations = load_character_anim_data()  # get dict of anim frames
+        self.status = 'idle'                          # set player state
+
+        console.add_message('Loaded player animations: ')
+        console.add_message(str(list(self.animations.keys())))
+        console.add_message('Hello, Ashley!!!')
+
+        self.current_anim = self.animations[self.status]  # NOTE: How to change animation!
+        self.frame_index = 0                              # NOTE: How to reset animation!
         self.frame_timer = 0
         self.frame_duration = 0.075  # in seconds (75 ms per frame)
 
         # setup sprite data
-        self.image = self.anim[self.frame]
+        self.image = self.current_anim[self.frame_index]
         self.rect = self.image.get_rect(center = SCREEN_CENTER)
     
     def input(self):
@@ -93,7 +102,7 @@ class Player(pygame.sprite.Sprite):
         self.frame_timer += delta_time
         if self.frame_timer >= self.frame_duration:
             self.frame_timer -= self.frame_duration
-            self.frame += 1
-        if self.frame == len(self.anim):
-            self.frame = 0
-        self.image = self.anim[self.frame]
+            self.frame_index += 1
+        if self.frame_index == len(self.current_anim):
+            self.frame_index = 0
+        self.image = self.current_anim[self.frame_index]

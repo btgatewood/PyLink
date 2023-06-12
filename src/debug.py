@@ -7,10 +7,11 @@ from config import *
 
 # setup pygame.font.render() args
 antialias = True
-color = 'white'
-bgcolor = 'black'  # can be used for optimization
-wraplength = 0     # max width (in pixels) before wrapping to new line
+color = 'white'     # TODO: Use inverse color for fps text?  Is it possible?
+bgcolor = None                  # can be used for optimization
+wraplength = SCREEN_WIDTH // 3  # max width (in pixels) before wrapping to new line
 
+# TODO: Use the console more!!!
 
 class Console:
     def __init__(self):
@@ -31,7 +32,8 @@ class Console:
         for line in self.messages:
             text += line + '\n'
 
-        self.surf = self.font.render(text, antialias, color)
+        self.surf = self.font.render(text, antialias, color, 
+                                     bgcolor, wraplength)
         
         # create transparent, inflated background
         self.bg_rect = self.surf.get_rect()
@@ -43,12 +45,14 @@ class Console:
         self.rect = self.surf.get_rect(center = self.bg_rect.center)
 
     def set_fps_text(self, text):
-        self.fps_surf = self.font.render(text, antialias, color)
+        # NOTE: 1st attempt at inverted fps text
+        self.fps_surf = self.font.render(text, antialias, (255,255,255,255)).convert_alpha()
         self.fps_rect = self.fps_surf.get_rect(
             topright = (1280 - 10, 10)  # TODO: use screen width 
         )
 
-    def render(self, screen):
+    def render(self, screen: pygame.Surface):
         screen.blit(self.bg_surf, self.bg_rect)
         screen.blit(self.surf, self.rect)
+        self.fps_surf.blit(screen, (0,0), self.fps_rect, pygame.BLEND_RGB_SUB)
         screen.blit(self.fps_surf, self.fps_rect)
