@@ -56,7 +56,8 @@ class Console:
         self.fps_bg_surf.fill((0, 0, 0, 128))
         self.fps_bg_rect.topright = (SCREEN_WIDTH - 4, 4)
 
-        self.fps_rect = self.fps_surf.get_rect(center = self.fps_bg_rect.center)
+        self.fps_rect = self.fps_surf.get_rect(
+            center = (self.fps_bg_rect.centerx, self.fps_bg_rect.centery + 2))   # hack for p's tail
     
     def render(self, screen: pygame.Surface):
         screen.blit(self.bg_surf, self.bg_rect)
