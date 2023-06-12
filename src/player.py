@@ -35,8 +35,11 @@ def load_character_anim_data():
             frame = pygame.transform.scale_by(frame, SCALE_FACTOR)
             anim_dict[anim_name].append(frame)
     
-    # for key in anim_dict.keys():
-    #     print(key)
+    console.add_message('Loaded player animations: ')
+    # msg = ''
+    # for anim in anim_dict.keys():
+    #     msg += anim + ', '
+    console.add_message(''.join(f'{anim}, ' for anim in anim_dict.keys()))
 
     return anim_dict
 
@@ -51,22 +54,16 @@ class Player(pygame.sprite.Sprite):
         self.speed = PLAYER_SPEED
 
         # setup graphics and anim data
-        self.animations = load_character_anim_data()  # get dict of anim frames
-        self.status = 'idle'                          # set player state
-
-        console.add_message('Loaded player animations: ')
-        msg = ''
-        for anim in self.animations.keys():
-            msg += anim + ', '
-        console.add_message(msg)
-
-        self.current_anim = self.animations[self.status]  # NOTE: How to change animation!
-        self.frame_index = 0                              # NOTE: How to reset animation!
+        self.anim_db = load_character_anim_data()  # get dict of anim frames
+        self.flip_x = False                        # true if facing left
+        self.state = 'idle'
+        # self.current_anim = self.anim_db[self.state]  
+        self.frame_index = 0                        
         self.frame_timer = 0
         self.frame_duration = 0.075  # in seconds (75 ms per frame)
 
         # setup sprite data
-        self.image = self.current_anim[self.frame_index]
+        self.image = self.anim_db[self.state][self.frame_index]
         self.rect = self.image.get_rect(center = SCREEN_CENTER)
     
     def input(self):
@@ -81,31 +78,44 @@ class Player(pygame.sprite.Sprite):
 
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
             self.direction.x = -1
+            if not self.flip_x:
+                self.flip_x = True  # flip animation
         elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             self.direction.x = 1
+            if self.flip_x:
+                self.flip_x = False  # re-flip animation
         else:
             self.direction.x = 0
     
     def move(self, dt):
-        # normalize direction for const speed with diagonal movement
-        if self.direction.magnitude() > 0:
-            self.direction = self.direction.normalize()
-
 		# horizontal & vertical movement
         self.position.x += self.direction.x * self.speed * dt
         self.rect.centerx = round(self.position.x)
         self.position.y += self.direction.y * self.speed * dt
         self.rect.centery = round(self.position.y)
+    
+    def animate(self, dt):
+        self.frame_timer += dt
+        if self.frame_timer >= self.frame_duration:
+            self.frame_index += 1
+            self.frame_timer -= self.frame_duration
+        if self.frame_index == len(self.anim_db[self.state]):
+            self.frame_index = 0
+
+        self.image = pygame.transform.flip(
+            self.anim_db[self.state][self.frame_index], self.flip_x, False)
+
 
     def update(self, delta_time):
         self.input()
-        self.move(delta_time)
 
-        # animate
-        self.frame_timer += delta_time
-        if self.frame_timer >= self.frame_duration:
-            self.frame_timer -= self.frame_duration
-            self.frame_index += 1
-        if self.frame_index == len(self.current_anim):
-            self.frame_index = 0
-        self.image = self.current_anim[self.frame_index]
+        # update player state
+        if self.direction.magnitude() == 0:
+            self.state = 'idle'
+        else:  # magnitude > 0
+            self.state = 'walk'
+            # normalize direction for const speed with diagonal movement
+            self.direction = self.direction.normalize()
+
+        self.move(delta_time)
+        self.animate(delta_time)
