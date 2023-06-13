@@ -25,8 +25,7 @@ def load_character_anim_data():
             
             frame_size = (json_data['frames'][key]['sourceSize']['w'],
                           json_data['frames'][key]['sourceSize']['h'])
-            frame = pygame.Surface(frame_size)
-            frame.set_colorkey((0,0,0))
+            frame = pygame.Surface(frame_size, pygame.SRCALPHA)
             frame_data = json_data['frames'][key]['frame']
             area = (frame_data['x'], frame_data['y'],
                     frame_data['w'], frame_data['h'])
@@ -47,7 +46,6 @@ def load_character_anim_data():
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-
         # movement
         self.direction = pygame.math.Vector2()
         self.position = pygame.math.Vector2(SCREEN_CENTER)
@@ -56,8 +54,7 @@ class Player(pygame.sprite.Sprite):
         # setup graphics and anim data
         self.anim_db = load_character_anim_data()  # get dict of anim frames
         self.flip_x = False                        # true if facing left
-        self.state = 'idle'
-        # self.current_anim = self.anim_db[self.state]  
+        self.state = 'idle' 
         self.frame_index = 0                        
         self.frame_timer = 0
         self.frame_duration = 0.075  # in seconds (75 ms per frame)
@@ -65,6 +62,23 @@ class Player(pygame.sprite.Sprite):
         # setup sprite data
         self.image = self.anim_db[self.state][self.frame_index]
         self.rect = self.image.get_rect(center = SCREEN_CENTER)
+    
+    def update(self, delta_time):
+        self.input()
+
+        # hack
+        if self.state == 'attack':
+            self.animate(delta_time)
+            return
+
+        # update player state
+        if self.direction.magnitude() == 0:
+            self.update_state('idle')
+        else: # magnitude > 0
+            self.update_state('walk')
+            self.move(delta_time)
+
+        self.animate(delta_time)
     
     def input(self):
         keys = pygame.key.get_pressed()
@@ -86,8 +100,21 @@ class Player(pygame.sprite.Sprite):
                 self.flip_x = False  # re-flip animation
         else:
             self.direction.x = 0
+        
+        # attack
+        if keys[pygame.K_SPACE]:
+            self.update_state('attack')
+    
+    def update_state(self, state):
+        if self.state != state:
+            self.state = state
+            self.frame_index = 0
     
     def move(self, dt):
+        # normalize direction for const speed with diagonal movement
+        # if self.direction.magnitude() > 0:
+        self.direction = self.direction.normalize()
+
 		# horizontal & vertical movement
         self.position.x += self.direction.x * self.speed * dt
         self.rect.centerx = round(self.position.x)
@@ -99,22 +126,13 @@ class Player(pygame.sprite.Sprite):
         if self.frame_timer >= self.frame_duration:
             self.frame_index += 1
             self.frame_timer -= self.frame_duration
-        if self.frame_index == len(self.anim_db[self.state]):
+        if self.frame_index >= len(self.anim_db[self.state]):
+            # hack
+            if self.state != 'idle':
+                self.state = 'idle'
             self.frame_index = 0
-
+        
+        # flip image
         self.image = pygame.transform.flip(
             self.anim_db[self.state][self.frame_index], self.flip_x, False)
-
-    def update(self, delta_time):
-        self.input()
-
-        # update player state
-        if self.direction.magnitude() == 0:
-            self.state = 'idle'
-        else:  # magnitude > 0
-            self.state = 'walk'
-            # normalize direction for const speed with diagonal movement
-            self.direction = self.direction.normalize()
-
-        self.move(delta_time)
-        self.animate(delta_time)
+        

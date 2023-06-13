@@ -4,6 +4,7 @@ import pygame
 from config import *
 
 # TODO: Use custom font.
+# TODO: Research and test pygame.SRCALPHA vs. pygame.Surface.convert_alpha().
 
 # setup pygame.font.render() args
 antialias = True
@@ -16,12 +17,12 @@ class Console:
         self.font = pygame.font.Font(None, 24)  # TODO: use custom font.
         self.messages = []
         # TODO: set timers for message lifespans & fade out
-        self.surf = pygame.surface.Surface((0,0))
+        self.surf = pygame.surface.Surface((0,0), pygame.SRCALPHA)
         self.rect = self.surf.get_rect()
         # self.fps_text = '0hz 0fps'
-        self.fps_surf = pygame.surface.Surface((0,0))
+        self.fps_surf = pygame.surface.Surface((0,0), pygame.SRCALPHA)
         self.fps_rect = self.surf.get_rect()
-        self.fps_bg_surf = pygame.surface.Surface((0,0))
+        self.fps_bg_surf = pygame.surface.Surface((0,0), pygame.SRCALPHA)
         self.fps_bg_rect = self.surf.get_rect()
     
     def add_message(self, msg):
@@ -34,12 +35,13 @@ class Console:
             text += line + '\n'
 
         self.surf = self.font.render(text, antialias, color, 
-                                     bgcolor, wraplength).convert_alpha()
+                                     bgcolor, wraplength)  # .convert_alpha()
         
         # create transparent, inflated background  # TODO: Refactor.
         self.bg_rect = self.surf.get_rect()
         self.bg_rect.inflate_ip(16, 16)
-        self.bg_surf = pygame.surface.Surface(self.bg_rect.size).convert_alpha()
+        self.bg_surf = pygame.surface.Surface(
+            self.bg_rect.size, pygame.SRCALPHA)  # .convert_alpha()
         self.bg_surf.fill((0, 0, 0, 128))
         self.bg_rect.bottomleft = (8, SCREEN_HEIGHT - 8)
 
@@ -47,12 +49,13 @@ class Console:
 
     def set_fps_text(self, text):
         # self.fps_text = text
-        self.fps_surf = self.font.render(text, antialias, color).convert_alpha()
+        self.fps_surf = self.font.render(text, antialias, color)  # .convert_alpha()
         
         # create transparent, inflated background  # TODO: Refactor.
         self.fps_bg_rect = self.fps_surf.get_rect()
         self.fps_bg_rect.inflate_ip(8, 8)
-        self.fps_bg_surf = pygame.surface.Surface(self.fps_bg_rect.size).convert_alpha()
+        self.fps_bg_surf = pygame.surface.Surface(
+            self.fps_bg_rect.size, pygame.SRCALPHA)  # .convert_alpha()
         self.fps_bg_surf.fill((0, 0, 0, 128))
         self.fps_bg_rect.topright = (SCREEN_WIDTH - 4, 4)
 
