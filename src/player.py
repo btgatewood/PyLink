@@ -33,12 +33,12 @@ def load_character_anim_data():
             frame = pygame.transform.scale_by(frame, SCALE_FACTOR)
             anim_dict[anim_name].append(frame)
     
-    console.add_message('Loaded extra player animations: ')
-    # msg = ''
-    # for anim in anim_dict.keys():
-    #     msg += anim + ', '
-    console.add_message(''.join(f'{anim}, ' for anim in anim_dict.keys() 
-                                if anim != 'walk' and anim != 'idle'))
+    # console.add_message('Loaded extra player animations: ')
+    # # msg = ''
+    # # for anim in anim_dict.keys():
+    # #     msg += anim + ', '
+    # console.add_message(''.join(f'{anim}, ' for anim in anim_dict.keys() 
+    #                             if anim != 'walk' and anim != 'idle'))
 
     return anim_dict
 
@@ -67,7 +67,7 @@ class Player(pygame.sprite.Sprite):
         self.input()
 
         # hack
-        if self.state == 'attack':
+        if self.state == 'doing':
             self.animate(delta_time)
             return
 
@@ -103,7 +103,7 @@ class Player(pygame.sprite.Sprite):
         
         # attack
         if keys[pygame.K_SPACE]:
-            self.update_state('attack')
+            self.update_state('doing')
     
     def update_state(self, state):
         if self.state != state:

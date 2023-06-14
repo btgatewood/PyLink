@@ -10,7 +10,7 @@ from config import *
 antialias = True
 color = 'white'
 bgcolor = None                  # can be used for optimization
-wraplength = SCREEN_WIDTH // 3  # max width (in pixels) before wrapping to new line
+wraplength = SCREEN_WIDTH // 4  # max width (in pixels) before wrapping to new line
 
 class Console:
     def __init__(self):
